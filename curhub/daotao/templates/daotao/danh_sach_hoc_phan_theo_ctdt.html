@@ -1,0 +1,55 @@
+{% load static %}
+
+<div class="mb-3">
+    <a href="{% url 'daotao:them_hoc_phan_hang_loat' ctdt.id %}" class="btn btn-success btn-sm">
+        <i class="fas fa-plus"></i> Thêm Học phần hàng loạt
+    </a>
+</div>
+
+{% if hoc_phan_trong_ctdt %}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Mã HP</th>
+                <th>Tên Học phần</th>
+                <th>TC LT</th>
+                <th>TC TH</th>
+                <th>Học kỳ dự kiến</th>
+                <th>Bắt buộc</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hp_ctdt in hoc_phan_trong_ctdt %}
+            <tr>
+                <td>{{ hp_ctdt.hoc_phan.ma_hoc_phan }}</td>
+                <td>{{ hp_ctdt.hoc_phan.ten_hoc_phan }}</td>
+                <td>{{ hp_ctdt.tin_chi_ly_thuyet_apdung }}</td>
+                <td>{{ hp_ctdt.tin_chi_thuc_hanh_apdung }}</td>
+                <td>{{ hp_ctdt.hoc_ky_du_kien|default:"N/A" }}</td>
+                <td>
+                    {% if hp_ctdt.la_bat_buoc %}
+                        <span class="badge badge-success">Có</span>
+                    {% else %}
+                        <span class="badge badge-secondary">Không</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'daotao:sua_chi_tiet_hp_trong_ctdt' hp_ctdt.id %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Sửa
+                    </a>
+                    <a href="{% url 'daotao:xoa_chi_tiet_hp_trong_ctdt' hp_ctdt.id %}" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Xóa
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>Chưa có học phần nào được thêm vào chương trình đào tạo này.</p>
+{% endif %}
+
+<a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary mt-3">Quay lại CTĐT</a>

@@ -1,0 +1,124 @@
+{% extends "daotao/base.html" %}
+
+{% block title %}Bảng điều khiển - CTĐT{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- TIÊU ĐỀ VÀ NÚT HÀNH ĐỘNG CHÍNH -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Quản lý Chương trình Đào tạo ({{ page_obj.paginator.count }})</h1>
+        <div>
+            <!-- Nút này sẽ được dùng sau khi có chức năng tạo mới -->
+            <!-- <a href="#" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Thêm CTĐT Mới</a> -->
+        </div>
+    </div>
+
+    <!-- BỘ LỌC VÀ TÌM KIẾM -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'daotao:danh_sach_ctdt' %}" class="row g-3 align-items-center">
+                <div class="col-lg-5 col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" name="q" class="form-control" placeholder="Tìm theo tên hoặc mã CTĐT..." value="{{ query_search }}">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <select name="trang_thai" class="form-select">
+                        <option value="">-- Lọc theo trạng thái --</option>
+                        {% for value, display in TRANG_THAI_CHOICES %}
+                            <option value="{{ value }}" {% if trang_thai_filter == value %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <select name="don_vi" class="form-select">
+                        <option value="">-- Lọc theo đơn vị --</option>
+                        {% for don_vi in don_vi_list %}
+                            <option value="{{ don_vi.id }}" {% if don_vi_filter == don_vi.id|stringformat:"s" %}selected{% endif %}>{{ don_vi.ten_don_vi }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-1 col-md-12">
+                    <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- LƯỚI HIỂN THỊ CÁC CHƯƠNG TRÌNH ĐÀO TẠO -->
+    <div class="row">
+        {% for ctdt in page_obj %}
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ ctdt.ten_nganh_ctdt }}</h5>
+                    <p class="card-subtitle mb-2 text-muted">{{ ctdt.ma_nganh_ctdt }} | v{{ ctdt.version }}</p>
+                    
+                    <div class="mt-auto">
+                        <p class="mb-2"><strong>Đơn vị:</strong> {{ ctdt.don_vi_quan_ly.ten_don_vi|default:"N/A" }}</p>
+                        <div class="mb-3">
+                            <strong>Trạng thái:</strong>
+                            <span class="badge rounded-pill
+                                {% if ctdt.trang_thai == 'APPROVED' %} bg-success-subtle border border-success-subtle text-success-emphasis
+                                {% elif ctdt.trang_thai == 'PENDING_APPROVAL' %} bg-warning-subtle border border-warning-subtle text-warning-emphasis
+                                {% elif ctdt.trang_thai == 'DRAFT' %} bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis
+                                {% elif ctdt.trang_thai == 'ARCHIVED' %} bg-light border
+                                {% else %} bg-danger-subtle border border-danger-subtle text-danger-emphasis {% endif %}">
+                                
+                                <i class="fas 
+                                    {% if ctdt.trang_thai == 'APPROVED' %} fa-check-circle
+                                    {% elif ctdt.trang_thai == 'PENDING_APPROVAL' %} fa-hourglass-half
+                                    {% elif ctdt.trang_thai == 'DRAFT' %} fa-pencil-alt
+                                    {% elif ctdt.trang_thai == 'ARCHIVED' %} fa-archive
+                                    {% else %} fa-times-circle {% endif %} me-1"></i>
+                                {{ ctdt.get_trang_thai_display }}
+                            </span>
+                        </div>
+                        
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Cập nhật: {{ ctdt.ngay_cap_nhat|date:"d/m/Y" }}</small>
+                            <a href="{% url 'daotao:chi_tiet_ctdt' ctdt.id %}" class="btn btn-primary btn-sm">Xem & Quản lý <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">
+                <h4 class="alert-heading">Không tìm thấy dữ liệu!</h4>
+                <p>Không có chương trình đào tạo nào phù hợp với điều kiện lọc của bạn.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- PHÂN TRANG -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1&{{ request.GET.urlencode | cut:'page=' }}">Đầu</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode | cut:'page=' }}">Trước</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Trước</span></li>
+                {% endif %}
+
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">Trang {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode | cut:'page=' }}">Sau</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode | cut:'page=' }}">Cuối</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Sau</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+</div>
+{% endblock %}

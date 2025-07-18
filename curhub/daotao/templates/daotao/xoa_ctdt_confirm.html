@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Xác nhận xóa Chương trình đào tạo - {{ block.super }} 
+    
+    {% endblock title %}
+        <h1>{{ page_title }}</h1>
+{% block content %}
+        {% if ctdt %}
+            <p style="color: red;">Bạn có chắc chắn muốn xóa vĩnh viễn Chương trình Đào tạo sau đây không?</p>
+
+            <div class="ctdt-info">
+                <p><strong>Mã ngành CTĐT:</strong> {{ ctdt.ma_nganh_ctdt }}</p>
+                <p><strong>Tên ngành CTĐT:</strong> {{ ctdt.ten_nganh_ctdt }}</p>
+                <p><strong>Trình độ đào tạo:</strong> {{ ctdt.get_trinh_do_dao_tao_display }}</p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %} <div class="actions">
+                    <button type="submit" class="delete-button">Vâng, Xóa Ngay</button>
+                    <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=ctdt.pk %}" class="cancel-link">Hủy bỏ</a>
+                    </div>
+            </form>
+        {% else %}
+            <p>Không tìm thấy thông tin chương trình đào tạo để xóa.</p>
+            <div class="actions">
+                <a href="{% url 'daotao:danh_sach_ctdt' %}" class="cancel-link">Quay lại Danh sách</a>
+            </div>
+        {% endif %}
+
+
+<style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center; }
+        
+        p { margin-bottom: 20px; line-height: 1.6; }
+        .ctdt-info { background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; text-align: left; }
+        .ctdt-info strong { color: #555; }
+        .actions button, .actions a {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .delete-button { background-color: #dc3545; color: white; border: 1px solid #dc3545; }
+        .delete-button:hover { background-color: #c82333; border-color: #bd2130; }
+        .cancel-link { background-color: #6c757d; color: white; border: 1px solid #6c757d; }
+        .cancel-link:hover { background-color: #5a6268; border-color: #545b62; }
+    </style>
+
+
+
+    {%endblock content %}

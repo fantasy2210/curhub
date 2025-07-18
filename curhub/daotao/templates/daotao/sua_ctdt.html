@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}Chỉnh sửa: {{ ctdt.ten_nganh_ctdt }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4">Chỉnh sửa Chương trình Đào tạo</h1>
+
+    <div class="card shadow">
+        <div class="card-header">
+            Thông tin chi tiết cho: <strong>{{ ctdt.ten_nganh_ctdt }}</strong>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <ul class="nav nav-tabs" id="ctdtTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">Thông tin chung</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="po-tab" data-toggle="tab" href="#po" role="tab" aria-controls="po" aria-selected="false">Mục tiêu đào tạo (PO)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="plo-tab" data-toggle="tab" href="#plo" role="tab" aria-controls="plo" aria-selected="false">Chuẩn đầu ra (PLO)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="curriculum-tab" data-toggle="tab" href="#curriculum" role="tab" aria-controls="curriculum" aria-selected="false">Khung chương trình (Học phần)</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="ctdtTabContent">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <h5 class="mt-4 mb-3">Thông tin chung về Chương trình Đào tạo</h5>
+                        {% include "daotao/partials/_form_fields.html" %}
+                    </div>
+
+                    <div class="tab-pane fade" id="po" role="tabpanel" aria-labelledby="po-tab">
+                        <h5 class="mt-4 mb-3">Mục tiêu đào tạo (PO)</h5>
+                        {{ po_formset.management_form }}
+                        <div id="po-form-container">
+                            {% for form in po_formset %}
+                                <div class="formset-row mb-3 p-3 border rounded bg-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Mục tiêu: {{ form.instance.ma_muc_tieu }}</h6>
+                                        <div>
+                                            {% if form.instance.pk %}
+                                            <a href="{% url 'daotao:sua_muc_tieu_dao_tao' form.instance.pk %}" class="btn btn-warning btn-sm mr-1">
+                                                <i class="fas fa-edit"></i> Sửa
+                                            </a>
+                                            <a href="{% url 'daotao:xoa_muc_tieu_dao_tao' form.instance.pk %}" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {# Render hidden fields explicitly to avoid them being caught by the loop and styled incorrectly #}
+                                    {{ form.id }}
+                                    {{ form.chuong_trinh_dao_tao }}
+                                    
+                                    <div class="form-group form-check"> {# Use form-check for the delete checkbox #}
+                                        {{ form.DELETE }}
+                                        <label class="form-check-label" for="{{ form.DELETE.id_for_label }}">Xóa Mục tiêu này</label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form.ma_muc_tieu.label_tag }}
+                                        {{ form.ma_muc_tieu|add_class:"form-control" }}
+                                        {% if form.ma_muc_tieu.help_text %}
+                                            <small class="form-text text-muted">{{ form.ma_muc_tieu.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in form.ma_muc_tieu.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.noi_dung.label_tag }}
+                                        {{ form.noi_dung|add_class:"form-control" }}
+                                        {% if form.noi_dung.help_text %}
+                                            <small class="form-text text-muted">{{ form.noi_dung.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in form.noi_dung.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-info btn-sm mt-2" id="add-po-form">Thêm Mục tiêu</button>
+                    </div>
+
+                    <div class="tab-pane fade" id="plo" role="tabpanel" aria-labelledby="plo-tab">
+                        <h5 class="mt-4 mb-3">Chuẩn đầu ra (PLO)</h5>
+                        <div class="mb-3">
+                            <a href="{% url 'daotao:them_chuan_dau_ra' ctdt.id %}" class="btn btn-success btn-sm">
+                                <i class="fas fa-plus"></i> Thêm Chuẩn đầu ra mới
+                            </a>
+                        </div>
+                        
+                        {% if plo_formset %}
+                            {{ plo_formset.management_form }}
+                            <div id="plo-form-container">
+                                {% for form in plo_formset %}
+                                    <div class="formset-row mb-3 p-3 border rounded bg-light">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0">Chuẩn đầu ra: {{ form.instance.ma_cdr }}</h6>
+                                            <div>
+                                                {% if form.instance.pk %}
+                                                <a href="{% url 'daotao:sua_chuan_dau_ra' form.instance.pk %}" class="btn btn-warning btn-sm mr-1">
+                                                    <i class="fas fa-edit"></i> Sửa
+                                                </a>
+                                                <a href="{% url 'daotao:xoa_chuan_dau_ra' form.instance.pk %}" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i> Xóa
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {# Render hidden fields explicitly to avoid them being caught by the loop and styled incorrectly #}
+                                        {{ form.id }}
+                                        {{ form.chuong_trinh_dao_tao }}
+                                        
+                                        <div class="form-group form-check"> {# Use form-check for the delete checkbox #}
+                                            {{ form.DELETE }}
+                                            <label class="form-check-label" for="{{ form.DELETE.id_for_label }}">Xóa Chuẩn đầu ra này</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ form.ma_cdr.label_tag }}
+                                            {{ form.ma_cdr|add_class:"form-control" }}
+                                            {% if form.ma_cdr.help_text %}
+                                                <small class="form-text text-muted">{{ form.ma_cdr.help_text }}</small>
+                                            {% endif %}
+                                            {% for error in form.ma_cdr.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.noi_dung.label_tag }}
+                                            {{ form.noi_dung|add_class:"form-control" }}
+                                            {% if form.noi_dung.help_text %}
+                                                <small class="form-text text-muted">{{ form.noi_dung.help_text }}</small>
+                                            {% endif %}
+                                            {% for error in form.noi_dung.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.dap_ung_muc_tieu.label_tag }}
+                                            {{ form.dap_ung_muc_tieu|add_class:"form-control" }}
+                                            {% if form.dap_ung_muc_tieu.help_text %}
+                                                <small class="form-text text-muted">{{ form.dap_ung_muc_tieu.help_text }}</small>
+                                            {% endif %}
+                                            {% for error in form.dap_ung_muc_tieu.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>Chưa có Chuẩn đầu ra nào được thêm vào chương trình này.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
+                        <h5 class="mt-4 mb-3">Khung chương trình (Học phần)</h5>
+                        {% include "daotao/danh_sach_hoc_phan_theo_ctdt.html" with ctdt=ctdt hoc_phan_trong_ctdt=hoc_phan_trong_ctdt %}
+                    </div>
+                </div>
+                
+                <hr class="mt-4">
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <a href="{% url 'daotao:chi_tiet_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% load static %}
+<script src="{% static 'adminlte/plugins/jquery/jquery.min.js' %}"></script>
+<script>
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+
+    function addForm(prefix, emptyFormHtml) {
+        var totalForms = $('#id_' + prefix + '-TOTAL_FORMS');
+        var currentForms = parseInt(totalForms.val());
+        var newForm = emptyFormHtml.replace(/__prefix__/g, currentForms);
+        var $newForm = $(newForm);
+        $('#' + prefix + '-form-container').append($newForm);
+        
+        // Add form-control class to relevant input types in the new form
+        $newForm.find('input[type="text"], input[type="number"], textarea, select').not('[type="checkbox"], [type="radio"]').addClass('form-control');
+
+        totalForms.val(currentForms + 1);
+    }
+
+    $(document).ready(function() {
+        // PO Formset
+        $('#add-po-form').click(function() {
+            var emptyFormHtml = `
+                <div class="formset-row mb-3 p-3 border rounded bg-light">
+                    {{ po_formset.empty_form.DELETE }}
+                    {% for field in po_formset.empty_form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            `;
+            addForm('po', emptyFormHtml);
+        });
+
+        // PLO Formset
+        $('#add-plo-form').click(function() {
+            var emptyFormHtml = `
+                <div class="formset-row mb-3 p-3 border rounded bg-light">
+                    {{ plo_formset.empty_form.DELETE }}
+                    {% for field in plo_formset.empty_form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            `;
+            addForm('plo', emptyFormHtml);
+        });
+
+        // Handle deletion (hide the form row)
+        $(document).on('change', '.formset-row input[type="checkbox"][id$="-DELETE"]', function() {
+            var row = $(this).closest('.formset-row');
+            if ($(this).is(':checked')) {
+                row.hide();
+            } else {
+                row.show();
+            }
+        });
+    });
+</script>
+{% endblock %}

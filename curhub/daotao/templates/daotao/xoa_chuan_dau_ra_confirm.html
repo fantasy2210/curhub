@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">{{ page_title }}</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Xác nhận xóa Chuẩn Đầu Ra</h6>
+        </div>
+        <div class="card-body">
+            <p>Bạn có chắc chắn muốn xóa Chuẩn Đầu Ra <strong>"{{ cdr.ma_cdr }} - {{ cdr.noi_dung }}"</strong> khỏi Chương trình Đào tạo <strong>"{{ ctdt.ten_nganh_ctdt }}"</strong> không?</p>
+            <p class="text-danger">Hành động này không thể hoàn tác.</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
+                <a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

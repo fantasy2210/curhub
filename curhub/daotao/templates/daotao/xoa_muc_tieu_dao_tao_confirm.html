@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4">{{ page_title }}</h1>
+
+    <div class="card shadow">
+        <div class="card-header">
+            Xác nhận xóa Mục tiêu đào tạo
+        </div>
+        <div class="card-body">
+            <p>Bạn có chắc chắn muốn xóa Mục tiêu đào tạo <strong>"{{ mt.ma_mt }}"</strong> khỏi chương trình <strong>"{{ ctdt.ten_nganh_ctdt }}"</strong> không?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
+                <a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

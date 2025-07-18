@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}CURHUB | Xác nhận Xóa Đơn vị Đào tạo{% endblock %}
+
+{% block page_title %}Xác nhận Xóa Đơn vị Đào tạo{% endblock %}
+
+{% block breadcrumb_items %}
+    <li class="breadcrumb-item"><a href="{% url 'daotao:danh_sach_don_vi' %}">Quản lý Đơn vị Đào tạo</a></li>
+    <li class="breadcrumb-item active">Xóa</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-exclamation-triangle mr-2"></i>Xác nhận xóa Đơn vị Đào tạo</h3>
+            </div>
+            <div class="card-body">
+                <p>Bạn có chắc chắn muốn xóa đơn vị đào tạo <strong>"{{ don_vi.ten_don_vi }}" (Mã: {{ don_vi.ma_don_vi }})</strong> không?</p>
+                <p class="text-danger">Hành động này không thể hoàn tác và sẽ xóa tất cả dữ liệu liên quan đến đơn vị này.</p>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg"><i class="fas fa-trash-alt mr-2"></i>Xác nhận Xóa</button>
+                        <a href="{% url 'daotao:danh_sach_don_vi' %}" class="btn btn-secondary">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

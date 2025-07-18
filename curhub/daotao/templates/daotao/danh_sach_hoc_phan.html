@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    {{ page_title|default:"Danh Sách Học Phần" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"DANH SÁCH HỌC PHẦN" }}
+{% endblock header_title %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">{{ page_title|default:"DANH SÁCH HỌC PHẦN" }}</h3>
+                    <div class="card-tools">
+                        <a href="{% url 'daotao:them_hoc_phan_vao_ctdt' %}" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus-circle mr-1"></i> Thêm Học Phần vào CTĐT
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- BỘ LỌC VÀ TÌM KIẾM -->
+                    <div class="card card-primary card-outline card-outline-tabs mb-3">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="search-tab" data-toggle="pill" href="#search-tab-pane" role="tab" aria-controls="search-tab-pane" aria-selected="true">Tìm kiếm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="filter-tab" data-toggle="pill" href="#filter-tab-pane" role="tab" aria-controls="filter-tab-pane" aria-selected="false">Bộ lọc</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-four-tabContent">
+                                <div class="tab-pane fade show active" id="search-tab-pane" role="tabpanel">
+                                    <form method="get" action="{% url 'daotao:danh_sach_hoc_phan' %}" class="row g-3 align-items-center">
+                                        <div class="col-lg-10 col-md-12 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                                </div>
+                                                <input type="text" name="q" class="form-control" placeholder="Tìm theo mã, tên học phần..." value="{{ query_search }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="filter-tab-pane" role="tabpanel">
+                                    <form method="get" action="{% url 'daotao:danh_sach_hoc_phan' %}" class="row g-3 align-items-center">
+                                        <input type="hidden" name="q" value="{{ query_search }}"> {# Giữ lại query search khi lọc #}
+                                        <div class="col-lg-4 col-md-6 mb-2">
+                                            <select name="tin_chi" class="form-control">
+                                                <option value="">-- Lọc theo số tín chỉ --</option>
+                                                <option value="lt_3" {% if tin_chi_filter == 'lt_3' %}selected{% endif %}>< 3 tín chỉ</option>
+                                                <option value="eq_3" {% if tin_chi_filter == 'eq_3' %}selected{% endif %}>= 3 tín chỉ</option>
+                                                <option value="gt_3" {% if tin_chi_filter == 'gt_3' %}selected{% endif %}>> 3 tín chỉ</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 mb-2">
+                                            <select name="don_vi" class="form-control">
+                                                <option value="">-- Lọc theo đơn vị quản lý gốc --</option>
+                                                {% for don_vi in don_vi_list %}
+                                                    <option value="{{ don_vi.id }}" {% if don_vi_filter == don_vi.id|stringformat:"s" %}selected{% endif %}>{{ don_vi.ten_don_vi }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 mb-2">
+                                            <select name="tu_chon" class="form-control">
+                                                <option value="">-- Học phần tự chọn? --</option>
+                                                <option value="true" {% if tu_chon_filter == 'true' %}selected{% endif %}>Có</option>
+                                                <option value="false" {% if tu_chon_filter == 'false' %}selected{% endif %}>Không</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    {% if page_obj %}
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Mã HP</th>
+                                <th>Tên Học Phần</th>
+                                <th>Tên Tiếng Anh</th>
+                                <th>Tổng TC</th>
+                                <th>Đơn vị quản lý gốc</th>
+                                <th>Tự chọn?</th>
+                                <th>Ngày cập nhật</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hoc_phan in page_obj %}
+                            <tr>
+                                <td>{{ hoc_phan.ma_hoc_phan }}</td>
+                                <td>{{ hoc_phan.ten_hoc_phan }}</td>
+                                <td>{{ hoc_phan.ten_tieng_anh|default:"N/A" }}</td>
+                                <td>{{ hoc_phan.tong_so_tin_chi_goc }}</td>
+                                <td>{{ hoc_phan.don_vi_quan_ly_goc.ten_don_vi|default:"N/A" }}</td>
+                                <td>{% if hoc_phan.la_hoc_phan_tu_chon %}Có{% else %}Không{% endif %}</td>
+                                <td>{{ hoc_phan.ngay_cap_nhat|date:"d/m/Y" }}</td>
+                                <td>
+                                    <a href="{% url 'daotao:sua_hoc_phan' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-warning btn-sm">Sửa</a>
+                                    <a href="{% url 'daotao:xoa_hoc_phan' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-danger btn-sm">Xóa</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-warning text-center m-3">
+                        <h4 class="alert-heading">Không tìm thấy dữ liệu!</h4>
+                        <p>Không có học phần nào phù hợp với điều kiện tìm kiếm của bạn.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer clearfix">
+                    {% if page_obj.has_other_pages %}
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1&{{ request.GET.urlencode | cut:'page=' }}">« Đầu</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode | cut:'page=' }}">‹ Trước</a></li>
+                            {% endif %}
+
+                            <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode | cut:'page=' }}">Sau ›</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode | cut:'page=' }}">Cuối »</a></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

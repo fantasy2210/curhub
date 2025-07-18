@@ -1,0 +1,266 @@
+[
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 1,
+    "fields": {
+      "ma_nganh": "7140101",
+      "ten_nganh": "Giáo dục học",
+      "mo_ta": "Ngành Giáo dục học thuộc nhóm Khoa học giáo dục.",
+      "ngay_tao": "2025-05-31T10:30:00Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:00Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 2,
+    "fields": {
+      "ma_nganh": "7140201",
+      "ten_nganh": "Giáo dục Mầm non",
+      "mo_ta": "Ngành Giáo dục Mầm non thuộc nhóm Đào tạo giáo viên.",
+      "ngay_tao": "2025-05-31T10:30:01Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:01Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 3,
+    "fields": {
+      "ma_nganh": "7140202",
+      "ten_nganh": "Giáo dục Tiểu học",
+      "mo_ta": "Ngành Giáo dục Tiểu học thuộc nhóm Đào tạo giáo viên.",
+      "ngay_tao": "2025-05-31T10:30:02Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:02Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 4,
+    "fields": {
+      "ma_nganh": "7140206",
+      "ten_nganh": "Giáo dục Thể chất",
+      "mo_ta": "Ngành Giáo dục Thể chất thuộc nhóm Đào tạo giáo viên.",
+      "ngay_tao": "2025-05-31T10:30:03Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:03Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 5,
+    "fields": {
+      "ma_nganh": "7220201",
+      "ten_nganh": "Ngôn ngữ Anh",
+      "mo_ta": "Ngành Ngôn ngữ Anh thuộc nhóm Ngôn ngữ, văn học và văn hóa nước ngoài.",
+      "ngay_tao": "2025-05-31T10:30:04Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:04Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 6,
+    "fields": {
+      "ma_nganh": "7310101",
+      "ten_nganh": "Kinh tế",
+      "mo_ta": "Ngành Kinh tế thuộc nhóm Kinh tế học.",
+      "ngay_tao": "2025-05-31T10:30:05Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:05Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 7,
+    "fields": {
+      "ma_nganh": "7310205",
+      "ten_nganh": "Quản lý nhà nước",
+      "mo_ta": "Ngành Quản lý nhà nước thuộc nhóm Khoa học chính trị.",
+      "ngay_tao": "2025-05-31T10:30:06Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:06Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 8,
+    "fields": {
+      "ma_nganh": "7340101",
+      "ten_nganh": "Quản trị kinh doanh",
+      "mo_ta": "Ngành Quản trị kinh doanh thuộc nhóm Kinh doanh.",
+      "ngay_tao": "2025-05-31T10:30:07Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:07Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 9,
+    "fields": {
+      "ma_nganh": "7340122",
+      "ten_nganh": "Thương mại điện tử",
+      "mo_ta": "Ngành Thương mại điện tử thuộc nhóm Kinh doanh.",
+      "ngay_tao": "2025-05-31T10:30:08Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:08Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 10,
+    "fields": {
+      "ma_nganh": "7340201",
+      "ten_nganh": "Tài chính – Ngân hàng",
+      "mo_ta": "Ngành Tài chính – Ngân hàng thuộc nhóm Tài chính - Ngân hàng - Bảo hiểm.",
+      "ngay_tao": "2025-05-31T10:30:09Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:09Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 11,
+    "fields": {
+      "ma_nganh": "7340301",
+      "ten_nganh": "Kế toán",
+      "mo_ta": "Ngành Kế toán thuộc nhóm Kế toán – Kiểm toán.",
+      "ngay_tao": "2025-05-31T10:30:10Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:10Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 12,
+    "fields": {
+      "ma_nganh": "7380101",
+      "ten_nganh": "Luật",
+      "mo_ta": "Ngành Luật thuộc nhóm Luật.",
+      "ngay_tao": "2025-05-31T10:30:11Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:11Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 13,
+    "fields": {
+      "ma_nganh": "7420201",
+      "ten_nganh": "Công nghệ sinh học",
+      "mo_ta": "Ngành Công nghệ sinh học thuộc nhóm Sinh học ứng dụng.",
+      "ngay_tao": "2025-05-31T10:30:12Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:12Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 14,
+    "fields": {
+      "ma_nganh": "7480201",
+      "ten_nganh": "Công nghệ thông tin",
+      "mo_ta": "Ngành Công nghệ thông tin thuộc nhóm Công nghệ thông tin.",
+      "ngay_tao": "2025-05-31T10:30:13Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:13Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 15,
+    "fields": {
+      "ma_nganh": "7510406",
+      "ten_nganh": "Công nghệ kỹ thuật môi trường",
+      "mo_ta": "Ngành Công nghệ kỹ thuật môi trường thuộc nhóm Công nghệ hóa học, vật liệu, luyện kim và môi trường.",
+      "ngay_tao": "2025-05-31T10:30:14Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:14Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 16,
+    "fields": {
+      "ma_nganh": "7620101",
+      "ten_nganh": "Nông nghiệp",
+      "mo_ta": "Ngành Nông nghiệp thuộc nhóm Nông nghiệp.",
+      "ngay_tao": "2025-05-31T10:30:15Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:15Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 17,
+    "fields": {
+      "ma_nganh": "7620301",
+      "ten_nganh": "Nuôi trồng thủy sản",
+      "mo_ta": "Ngành Nuôi trồng thủy sản thuộc nhóm Thủy sản.",
+      "ngay_tao": "2025-05-31T10:30:16Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:16Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 18,
+    "fields": {
+      "ma_nganh": "7640101",
+      "ten_nganh": "Thú y",
+      "mo_ta": "Ngành Thú y thuộc nhóm Thú y.",
+      "ngay_tao": "2025-05-31T10:30:17Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:17Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 19,
+    "fields": {
+      "ma_nganh": "7720101",
+      "ten_nganh": "Y khoa",
+      "mo_ta": "Ngành Y khoa thuộc nhóm Y học.",
+      "ngay_tao": "2025-05-31T10:30:18Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:18Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 20,
+    "fields": {
+      "ma_nganh": "7720110",
+      "ten_nganh": "Y học dự phòng",
+      "mo_ta": "Ngành Y học dự phòng thuộc nhóm Y học.",
+      "ngay_tao": "2025-05-31T10:30:19Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:19Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 21,
+    "fields": {
+      "ma_nganh": "7720501",
+      "ten_nganh": "Răng - Hàm - Mặt",
+      "mo_ta": "Ngành Răng - Hàm - Mặt (Nha khoa) thuộc nhóm Sức khoẻ.",
+      "ngay_tao": "2025-05-31T10:30:20Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:20Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 22,
+    "fields": {
+      "ma_nganh": "7720701",
+      "ten_nganh": "Y tế công cộng",
+      "mo_ta": "Ngành Y tế công cộng thuộc nhóm Y tế công cộng.",
+      "ngay_tao": "2025-05-31T10:30:21Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:21Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 23,
+    "fields": {
+      "ma_nganh": "7810301",
+      "ten_nganh": "Quản lý thể dục thể thao",
+      "mo_ta": "Ngành Quản lý thể dục thể thao thuộc nhóm Thể dục, thể thao.",
+      "ngay_tao": "2025-05-31T10:30:22Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:22Z"
+    }
+  },
+  {
+    "model": "daotao.nganhdaotao",
+    "pk": 24,
+    "fields": {
+      "ma_nganh": "7850101",
+      "ten_nganh": "Quản lý tài nguyên và môi trường",
+      "mo_ta": "Ngành Quản lý tài nguyên và môi trường thuộc nhóm Quản lý tài nguyên và môi trường.",
+      "ngay_tao": "2025-05-31T10:30:23Z",
+      "ngay_cap_nhat": "2025-05-31T10:30:23Z"
+    }
+  }
+]

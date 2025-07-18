@@ -1,0 +1,29 @@
+{% for field in form %}
+    <div class="form-group mb-3">
+        {{ field.label_tag }}
+        
+        {# Thêm class 'form-control' cho các trường input thông thường #}
+        {% if 'CheckboxInput' not in field.field.widget.template_name %}
+            {{ field|add_class:"form-control" }}
+        {% else %}
+            <div class="form-check">
+                {{ field|add_class:"form-check-input" }}
+            </div>
+        {% endif %}
+
+        {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+{% if form.non_field_errors %}
+    <div class="alert alert-danger mt-3">
+        {% for error in form.non_field_errors %}
+            <p class="mb-0">{{ error }}</p>
+        {% endfor %}
+    </div>
+{% endif %}

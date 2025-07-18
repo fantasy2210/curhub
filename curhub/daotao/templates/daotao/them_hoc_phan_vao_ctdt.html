@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    {{ page_title|default:"Thêm Học Phần" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"THÊM HỌC PHẦN MỚI" }}
+{% endblock header_title %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ page_title|default:"THÊM HỌC PHẦN MỚI" }}</h3>
+                    </div>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            {% if message %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {% for error in form.non_field_errors %}
+                                        <p class="mb-0">{{ error }}</p>
+                                    {% endfor %}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+
+                            {# Include the partial for rendering form fields with Bootstrap classes #}
+                            {% include 'daotao/partials/_form_fields.html' %}
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary">Lưu Học Phần</button>
+                            <a href="{% url 'daotao:danh_sach_ctdt' %}" class="btn btn-secondary ml-2">Quay lại DS CTĐT</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

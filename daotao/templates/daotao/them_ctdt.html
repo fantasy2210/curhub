@@ -1,0 +1,64 @@
+{% extends 'daotao/base.html' %}
+{% load form_tags %}
+
+{% block title %}Thêm Mới Chương Trình Đào Tạo{% endblock title %}
+
+{% block page_title %}Thêm Mới Chương Trình Đào tạo{% endblock page_title %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <!-- CỘT BÊN TRÁI -->
+        <div class="col-lg-8">
+            <div class="card card-primary card-outline">
+                <div class="card-header"><h3 class="card-title">Thông tin chi tiết</h3></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.ma_nganh_ctdt.label_tag }}
+                            {{ form.ma_nganh_ctdt|add_class:"" }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.ten_nganh_ctdt.label_tag }}
+                            {{ form.ten_nganh_ctdt|add_class:"" }}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            {{ form.ten_tieng_anh.label_tag }}
+                            {{ form.ten_tieng_anh|add_class:"" }}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            {{ form.mo_ta_chung.label_tag }}
+                            {{ form.mo_ta_chung|add_class:"" }}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            {{ form.chuong_trinh_tham_khao.label_tag }}
+                            {{ form.chuong_trinh_tham_khao|add_class:"" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CỘT BÊN PHẢI -->
+        <div class="col-lg-4">
+            <div class="card card-secondary card-outline">
+                <div class="card-header"><h3 class="card-title">Thuộc tính</h3></div>
+                <div class="card-body">
+                    <div class="mb-3">{{ form.don_vi_quan_ly.label_tag }}{{ form.don_vi_quan_ly|add_class:"" }}</div>
+                    <div class="mb-3">{{ form.nganh_hoc_chung.label_tag }}{{ form.nganh_hoc_chung|add_class:"" }}</div>
+                    <div class="mb-3">{{ form.trinh_do_dao_tao.label_tag }}{{ form.trinh_do_dao_tao|add_class:"" }}</div>
+                    <div class="mb-3">{{ form.hinh_thuc_dao_tao.label_tag }}{{ form.hinh_thuc_dao_tao|add_class:"" }}</div>
+                    <div class="mb-3">{{ form.van_bang_tot_nghiep.label_tag }}{{ form.van_bang_tot_nghiep|add_class:"" }}</div>
+                    <div class="mb-3">{{ form.so_tin_chi_yeu_cau.label_tag }}{{ form.so_tin_chi_yeu_cau|add_class:"" }}</div>
+                    <div class="mb-3">{{ form.thoi_gian_dao_tao.label_tag }}{{ form.thoi_gian_dao_tao|add_class:"" }}</div>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save me-2"></i>Lưu Chương Trình</button>
+                <a href="{% url 'daotao:danh_sach_ctdt' %}" class="btn btn-secondary">Hủy</a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">{{ page_title }}</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Sửa Chuẩn Đầu Ra: {{ cdr.ma_cdr }} của CTĐT: {{ ctdt.ten_nganh_ctdt }}</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% include "daotao/partials/_form_fields.html" %}
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

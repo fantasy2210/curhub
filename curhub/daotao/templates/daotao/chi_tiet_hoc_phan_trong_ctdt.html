@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ page_title|default:"Chi Tiết Học Phần trong CTĐT" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"CHI TIẾT HỌC PHẦN TRONG CHƯƠNG TRÌNH ĐÀO TẠO" }}
+{% endblock header_title %}
+
+{% block content %}
+    {% if chi_tiet_hp %}
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Thông tin Học phần (Thư viện)</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Mã Học phần (gốc):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_phan.ma_hoc_phan }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tên Học phần (gốc):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_phan.ten_hoc_phan }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số TC LT (gốc):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_phan.tin_chi_ly_thuyet_goc }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số TC TH (gốc):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_phan.tin_chi_thuc_hanh_goc }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tổng TC (gốc):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_phan.tong_so_tin_chi_goc }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Mô tả học phần (gốc):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_phan.mo_ta_hoc_phan|linebreaksbr|default:"Chưa có mô tả." }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Thông tin chi tiết trong Chương trình Đào tạo: "{{ chi_tiet_hp.chuong_trinh_dao_tao.ten_nganh_ctdt }}"</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Thuộc Chương trình Đào tạo:</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.chuong_trinh_dao_tao.ten_nganh_ctdt }} ({{ chi_tiet_hp.chuong_trinh_dao_tao.ma_nganh_ctdt }})</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Danh mục kiến thức (trong CTĐT):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">
+                            {% if chi_tiet_hp.danh_muc_kien_thuc %}
+                                {{ chi_tiet_hp.danh_muc_kien_thuc }}
+                            {% else %}
+                                Chưa phân loại
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Là học phần bắt buộc (trong CTĐT)?:</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{% if chi_tiet_hp.la_bat_buoc %}Có{% else %}Không{% endif %}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Học kỳ dự kiến (trong CTĐT):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.hoc_ky_du_kien|default:"Chưa có" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số TC LT (áp dụng):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.tin_chi_ly_thuyet_apdung|default:"Như gốc" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số TC TH (áp dụng):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.tin_chi_thuc_hanh_apdung|default:"Như gốc" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Tổng TC (áp dụng):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.tong_so_tin_chi_apdung }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số giờ LT (áp dụng):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.so_gio_ly_thuyet_apdung|default:"Như gốc" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số giờ TH (áp dụng):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.so_gio_thuc_hanh_apdung|default:"Như gốc" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Số giờ tự học (áp dụng):</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.so_gio_tu_hoc_apdung|default:"Như gốc" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Ghi chú riêng cho CTĐT:</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.ghi_chu_trong_ctdt|linebreaksbr|default:"Không có ghi chú." }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Ngày thêm vào CTĐT:</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.ngay_tao_lien_ket|date:"H:i:s d/m/Y" }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Ngày cập nhật trong CTĐT:</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ chi_tiet_hp.ngay_cap_nhat_lien_ket|date:"H:i:s d/m/Y" }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{% url 'daotao:sua_chi_tiet_hp_trong_ctdt' pk_chi_tiet_hp=chi_tiet_hp.pk %}" class="btn btn-primary">Sửa</a>
+                <a href="{% url 'daotao:danh_sach_hoc_phan_theo_ctdt' pk_ctdt=chi_tiet_hp.chuong_trinh_dao_tao.pk %}" class="btn btn-secondary ml-2">Quay lại DS Học Phần của CTĐT</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            <p class="mb-0">Không tìm thấy thông tin chi tiết học phần này.</p>
+        </div>
+        <div class="text-center mt-3">
+             <a href="{% url 'daotao:danh_sach_ctdt' %}" class="btn btn-secondary">Quay lại DS Chương Trình Đào Tạo</a>
+        </div>
+    {% endif %}
+{% endblock content %}

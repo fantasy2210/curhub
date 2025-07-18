@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ page_title|default:"Thêm Học Phần Hàng Loạt" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"THÊM HỌC PHẦN HÀNG LOẠT VÀO CHƯƠNG TRÌNH ĐÀO TẠO" }}
+{% endblock header_title %}
+
+{% block content %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Chọn học phần cho CTĐT: <strong>{{ ctdt.ten_nganh_ctdt }}</strong></h3>
+        </div>
+        <form method="POST" id="bulkAddForm">
+            {% csrf_token %}
+            <input type="hidden" name="ctdt_pk" value="{{ ctdt.pk }}">
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="id_hoc_ky_du_kien_default" class="col-sm-3 col-form-label">Học kỳ dự kiến (mặc định):</label>
+                    <div class="col-sm-3">
+                        <input type="number" name="hoc_ky_du_kien_default" id="id_hoc_ky_du_kien_default" class="form-control" placeholder="VD: 1, 2">
+                    </div>
+                    <label for="id_la_bat_buoc_default" class="col-sm-3 col-form-label">Là bắt buộc (mặc định):</label>
+                    <div class="col-sm-3">
+                        <select name="la_bat_buoc_default" id="id_la_bat_buoc_default" class="form-control">
+                            <option value="">Không đặt mặc định</option>
+                            <option value="True">Có</option>
+                            <option value="False">Không</option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="filterMaHP" class="col-sm-2 col-form-label">Lọc theo Mã HP:</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="filterMaHP" class="form-control" placeholder="Nhập mã học phần...">
+                    </div>
+                    <label for="filterTenHP" class="col-sm-2 col-form-label">Lọc theo Tên HP:</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="filterTenHP" class="form-control" placeholder="Nhập tên học phần...">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="hocPhanTable" class="table table-bordered table-striped" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;"><input type="checkbox" id="selectAll"></th>
+                                <th style="width: 10%;">Mã HP</th>
+                                <th style="width: 30%;">Tên Học Phần</th>
+                                <th style="width: 10%;">Tổng TC</th>
+                                <th style="width: 20%;">Đơn vị QL</th>
+                                <th style="width: 25%;">Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- DataTables will populate this tbody via AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">Thêm Học Phần Đã Chọn</button>
+                <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=ctdt.pk %}" class="btn btn-secondary ml-2">Hủy bỏ</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block custom_scripts %}
+<script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    console.log("Bắt đầu khởi tạo DataTables...");
+
+    var table = $('#hocPhanTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "searching": false,
+        "ajax": {
+            "url": "{% url 'daotao:them_hoc_phan_hang_loat' pk_ctdt=ctdt.pk %}",
+            "type": "GET",
+            "data": function(d) {
+                d.format = 'datatables';
+                d.search_ma_hp = $('#filterMaHP').val();
+                d.search_ten_hp = $('#filterTenHP').val();
+                console.log("Đang gửi yêu cầu AJAX với dữ liệu:", d);
+            },
+            "dataSrc": function(json) {
+                console.log("Đã nhận phản hồi từ server:", json);
+                return json.data;
+            },
+            "error": function (xhr, error, thrown) {
+                console.error("Lỗi AJAX DataTables:", error, thrown);
+                alert("Đã xảy ra lỗi khi tải dữ liệu. Vui lòng kiểm tra Console của trình duyệt (F12).");
+            }
+        },
+        "columns": [
+            { "data": 0, "orderable": false },
+            { "data": 1 },
+            { "data": 2 },
+            { "data": 3 },
+            { "data": 4 },
+            { "data": 5, "orderable": false }
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Vietnamese.json"
+        }
+    });
+
+    console.log("Đã khởi tạo DataTables.");
+
+    // Custom filter trigger
+    $('#filterMaHP, #filterTenHP').on('keyup change', function () {
+        console.log("Bộ lọc đã thay đổi, đang tải lại bảng...");
+        table.ajax.reload();
+    });
+});
+</script>
+{% endblock custom_scripts %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+{% endblock extra_css %}

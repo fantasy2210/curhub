@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ page_title|default:"Cập nhật Chi Tiết Học Phần" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"CẬP NHẬT CHI TIẾT HỌC PHẦN" }}
+{% endblock header_title %}
+
+{% block content %}
+    {% if chi_tiet_hp %}
+        <p style="text-align: center; margin-bottom: 15px;">
+            Đang cập nhật cho học phần: <strong>{{ chi_tiet_hp.hoc_phan.ten_hoc_phan }}</strong><br>
+            Trong chương trình: <strong>{{ chi_tiet_hp.chuong_trinh_dao_tao.ten_nganh_ctdt }}</strong>
+        </p>
+    {% endif %}
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin chi tiết học phần</h3>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="card-body">
+                {% include 'daotao/partials/_form_fields.html' %}
+            </div>
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                <a href="{% if chi_tiet_hp %}{% url 'daotao:chi_tiet_hoc_phan_trong_ctdt' pk_chi_tiet_hp=chi_tiet_hp.pk %}{% else %}{% url 'daotao:danh_sach_ctdt' %}{% endif %}" class="btn btn-secondary ml-2">Hủy bỏ</a>
+            </div>
+        </form>
+    </div>
+    {# Hiển thị lỗi chung của form (non-field errors) nếu có #}
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger mt-3">
+            {% for error in form.non_field_errors %}
+                <p class="mb-0">{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock content %}

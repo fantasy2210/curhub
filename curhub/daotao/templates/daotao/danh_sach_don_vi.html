@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    {{ page_title|default:"Danh Sách Đơn vị Đào tạo" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"DANH SÁCH ĐƠN VỊ ĐÀO TẠO" }}
+{% endblock header_title %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">{{ page_title|default:"DANH SÁCH ĐƠN VỊ ĐÀO TẠO" }}</h3>
+                    <div class="card-tools">
+                        <a href="{% url 'daotao:them_don_vi' %}" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus-circle mr-1"></i> Thêm mới Đơn vị Đào tạo
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- BỘ LỌC VÀ TÌM KIẾM -->
+                    <div class="card card-primary card-outline card-outline-tabs mb-3">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="search-tab" data-toggle="pill" href="#search-tab-pane" role="tab" aria-controls="search-tab-pane" aria-selected="true">Tìm kiếm</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-four-tabContent">
+                                <div class="tab-pane fade show active" id="search-tab-pane" role="tabpanel">
+                                    <form method="get" action="{% url 'daotao:danh_sach_don_vi' %}" class="row g-3 align-items-center">
+                                        <div class="col-lg-10 col-md-12 mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                                </div>
+                                                <input type="text" name="q" class="form-control" placeholder="Tìm theo mã, tên đơn vị..." value="{{ query_search }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    {% if page_obj %}
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Mã Đơn vị</th>
+                                <th>Tên Đơn vị</th>
+                                <th>Đơn vị cha</th>
+                                <th>Ngày cập nhật</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for don_vi in page_obj %}
+                            <tr>
+                                <td>{{ don_vi.ma_don_vi }}</td>
+                                <td>{{ don_vi.ten_don_vi }}</td>
+                                <td>{{ don_vi.don_vi_cha.ten_don_vi|default:"N/A" }}</td>
+                                <td>{{ don_vi.ngay_cap_nhat|date:"d/m/Y" }}</td>
+                                <td>
+                                    <a href="{% url 'daotao:sua_don_vi' pk_don_vi=don_vi.pk %}" class="btn btn-warning btn-sm">Sửa</a>
+                                    <a href="{% url 'daotao:xoa_don_vi' pk_don_vi=don_vi.pk %}" class="btn btn-danger btn-sm">Xóa</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-warning text-center m-3">
+                        <h4 class="alert-heading">Không tìm thấy dữ liệu!</h4>
+                        <p>Không có đơn vị đào tạo nào phù hợp với điều kiện tìm kiếm của bạn.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer clearfix">
+                    {% if page_obj.has_other_pages %}
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1&{{ request.GET.urlencode | cut:'page=' }}">« Đầu</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode | cut:'page=' }}">‹ Trước</a></li>
+                            {% endif %}
+
+                            <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode | cut:'page=' }}">Sau ›</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode | cut:'page=' }}">Cuối »</a></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

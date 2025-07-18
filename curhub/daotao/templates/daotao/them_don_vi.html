@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}CURHUB | Thêm mới Đơn vị Đào tạo{% endblock %}
+
+{% block page_title %}Thêm mới Đơn vị Đào tạo{% endblock %}
+
+{% block breadcrumb_items %}
+    <li class="breadcrumb-item"><a href="{% url 'daotao:danh_sach_don_vi' %}">Quản lý Đơn vị Đào tạo</a></li>
+    <li class="breadcrumb-item active">Thêm mới</li>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card card-primary card-outline mb-4">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-info-circle me-2"></i>Thông tin Đơn vị Đào tạo</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.ma_don_vi.id_for_label }}" class="form-label">{{ form.ma_don_vi.label }}</label>
+                        {{ form.ma_don_vi|add_class:"" }}
+                        {% if form.ma_don_vi.errors %}<div class="text-danger">{{ form.ma_don_vi.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.ten_don_vi.id_for_label }}" class="form-label">{{ form.ten_don_vi.label }}</label>
+                        {{ form.ten_don_vi|add_class:"" }}
+                        {% if form.ten_don_vi.errors %}<div class="text-danger">{{ form.ten_don_vi.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.don_vi_cha.id_for_label }}" class="form-label">{{ form.don_vi_cha.label }}</label>
+                        {{ form.don_vi_cha|add_class:"" }}
+                        {% if form.don_vi_cha.errors %}<div class="text-danger">{{ form.don_vi_cha.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.mo_ta.id_for_label }}" class="form-label">{{ form.mo_ta.label }}</label>
+                        {{ form.mo_ta|add_class:"" }}
+                        {% if form.mo_ta.errors %}<div class="text-danger">{{ form.mo_ta.errors }}</div>{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save me-2"></i>Lưu Đơn vị</button>
+                        <a href="{% url 'daotao:danh_sach_don_vi' %}" class="btn btn-secondary">Hủy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}
+
+{% block custom_scripts %}
+<script>
+  $(function () {
+    // Initialize Select2 for don_vi_cha field
+    $('#id_don_vi_cha').select2({
+      theme: 'bootstrap4'
+    });
+    // Initialize Summernote for mo_ta field
+    $('#id_mo_ta').summernote({
+        height: 150,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+  })
+</script>
+{% endblock custom_scripts %}

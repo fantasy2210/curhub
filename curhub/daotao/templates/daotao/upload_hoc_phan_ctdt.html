@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ page_title|default:"Tải lên Học phần vào CTĐT" }} - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    {{ page_title|default:"TẢI LÊN HỌC PHẦN VÀO CHƯƠNG TRÌNH ĐÀO TẠO" }}
+{% endblock header_title %}
+
+{% block content %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Tải lên danh sách học phần cho CTĐT: <strong>{{ chuong_trinh.ten_nganh_ctdt }}</strong></h3>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            {{ form.file }}
+                            <label class="custom-file-label" for="{{ form.file.id_for_label }}">Chọn tệp</label>
+                        </div>
+                    </div>
+                    {% if form.file.help_text %}
+                        <small class="form-text text-muted">{{ form.file.help_text }}</small>
+                    {% endif %}
+                    {% if form.file.errors %}
+                        <div class="invalid-feedback d-block">{{ form.file.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger mt-3">
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">Tải lên</button>
+                <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=chuong_trinh.pk %}" class="btn btn-secondary ml-2">Hủy bỏ</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card card-secondary mt-4">
+        <div class="card-header">
+            <h3 class="card-title">Hướng dẫn cấu trúc tệp Excel/CSV</h3>
+        </div>
+        <div class="card-body">
+            <p>Để tải lên danh sách học phần vào chương trình đào tạo, tệp Excel (.xls, .xlsx) hoặc CSV (.csv) của bạn cần có cấu trúc các cột như sau:</p>
+            <p>Bạn có thể tải xuống tệp mẫu tại đây: <a href="{% url 'daotao:download_hoc_phan_ctdt_template' %}" class="btn btn-info btn-sm"><i class="fas fa-download mr-1"></i> Tải tệp mẫu</a></p>
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>Tên cột (chính xác)</th>
+                        <th>Mô tả</th>
+                        <th>Ví dụ giá trị</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Mã học phần</code></td>
+                        <td>Mã học phần trong thư viện học phần chung.</td>
+                        <td><code>IT101</code></td>
+                        <td><strong>Bắt buộc.</strong> Phải tồn tại trong hệ thống.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Học kỳ dự kiến</code></td>
+                        <td>Học kỳ dự kiến học học phần này trong CTĐT.</td>
+                        <td><code>1</code>, <code>2</code>, <code>3</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Bắt buộc</code></td>
+                        <td>Học phần này có bắt buộc trong CTĐT không.</td>
+                        <td><code>Có</code> / <code>Không</code> hoặc <code>TRUE</code> / <code>FALSE</code></td>
+                        <td>Giá trị boolean.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Danh mục kiến thức</code></td>
+                        <td>Phân loại học phần theo danh mục kiến thức.</td>
+                        <td><code>Kiến thức cơ sở ngành</code></td>
+                        <td>Phải tồn tại trong danh mục kiến thức của hệ thống.</td>
+                    </tr>
+                    <tr>
+                        <td><code>TC LT áp dụng</code></td>
+                        <td>Số tín chỉ lý thuyết áp dụng cho học phần này trong CTĐT.</td>
+                        <td><code>2</code></td>
+                        <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>TC TH áp dụng</code></td>
+                        <td>Số tín chỉ thực hành áp dụng cho học phần này trong CTĐT.</td>
+                        <td><code>1</code></td>
+                        <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số giờ LT áp dụng</code></td>
+                        <td>Số giờ lý thuyết áp dụng cho học phần này trong CTĐT.</td>
+                        <td><code>30</code></td>
+                        <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số giờ TH áp dụng</code></td>
+                        <td>Số giờ thực hành áp dụng cho học phần này trong CTĐT.</td>
+                        <td><code>15</code></td>
+                        <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số giờ tự học áp dụng</code></td>
+                        <td>Số giờ tự học áp dụng cho học phần này trong CTĐT.</td>
+                        <td><code>45</code></td>
+                        <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số tiết LT Online</code></td>
+                        <td>Số tiết lý thuyết học online.</td>
+                        <td><code>10</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Ghi chú</code></td>
+                        <td>Ghi chú thêm cho học phần trong CTĐT.</td>
+                        <td><code>Học phần tiên quyết</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="text-info"><strong>Lưu ý:</strong> Các cột không bắt buộc có thể để trống. Đảm bảo tên cột trong tệp của bạn khớp chính xác với tên cột trong bảng hướng dẫn này.</p>
+        </div>
+    </div>
+
+    <script>
+        // Script để hiển thị tên file đã chọn trong input
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('id_file');
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    const fileName = this.files[0] ? this.files[0].name : 'Chọn tệp';
+                    const label = this.nextElementSibling;
+                    if (label) {
+                        label.innerText = fileName;
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock content %}

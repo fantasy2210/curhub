@@ -1,0 +1,21 @@
+Tóm tắt những điểm chính:
+
+Django là gì: Là một framework web Python bậc cao, giúp phát triển nhanh, thiết kế sạch sẽ, với triết lý "DRY" (Don't Repeat Yourself) và "Batteries Included" (đầy đủ tính năng).
+Kiến trúc MTV (Model-Template-View):
+Model: Lớp truy cập dữ liệu, tương tác với cơ sở dữ liệu (giống Model trong MVC).
+Template: Lớp trình bày, hiển thị dữ liệu cho người dùng (giống View trong MVC).
+View: Lớp xử lý logic, nhận request và trả về response, tương tác với Model và Template (giống Controller trong MVC).
+Cài đặt:
+Nên sử dụng môi trường ảo (venv hoặc conda) để quản lý các gói cho từng dự án.
+Cài đặt Django bằng pip install django hoặc conda install django.
+Tạo dự án:
+Sử dụng lệnh django-admin startproject ten_du_an.
+Dự án mới tạo sẽ có file manage.py (công cụ quản lý) và một thư mục con chứa các file cấu hình như settings.py (cấu hình dự án, bao gồm cả cơ sở dữ liệu) và urls.py (định tuyến URL).
+Chạy server phát triển:
+Sử dụng lệnh python manage.py runserver trong thư mục dự án.
+Truy cập http://127.0.0.1:8000/ để xem trang chào mừng.
+Bạn đã nắm bắt rất tốt những khái niệm và thao tác cơ bản này!
+
+Run server:
+
+python manage.py runserver  

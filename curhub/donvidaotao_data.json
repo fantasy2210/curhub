@@ -1,0 +1,354 @@
+[
+    {
+        "model": "daotao.donvidaotao", "pk": 1,
+        "fields": { "ma_don_vi": "BGH", "ten_don_vi": "Ban Giám Hiệu", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 2,
+        "fields": { "ma_don_vi": "T_KT_L", "ten_don_vi": "Trường Kinh tế, Luật", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 3,
+        "fields": { "ma_don_vi": "T_NNVHKNB", "ten_don_vi": "Trường Ngôn ngữ - Văn hóa - Nghệ thuật Khmer Nam Bộ và Nhân văn", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 4,
+        "fields": { "ma_don_vi": "T_YD", "ten_don_vi": "Trường Y Dược", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 5,
+        "fields": { "ma_don_vi": "T_KTCN", "ten_don_vi": "Trường Kỹ thuật và Công nghệ", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 6,
+        "fields": { "ma_don_vi": "K_KTL", "ten_don_vi": "Khoa Kinh tế, Luật", "don_vi_cha": 2, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 7,
+        "fields": { "ma_don_vi": "K_KT", "ten_don_vi": "Khoa Kinh tế", "don_vi_cha": 6, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 8,
+        "fields": { "ma_don_vi": "K_LUAT", "ten_don_vi": "Khoa Luật", "don_vi_cha": 6, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 9,
+        "fields": { "ma_don_vi": "K_QT", "ten_don_vi": "Khoa Quản trị", "don_vi_cha": 6, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 10,
+        "fields": { "ma_don_vi": "K_LOG", "ten_don_vi": "Khoa Logistics", "don_vi_cha": 6, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 11,
+        "fields": { "ma_don_vi": "K_TC", "ten_don_vi": "Khoa Tài chính", "don_vi_cha": 6, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 12,
+        "fields": { "ma_don_vi": "K_KETOAN", "ten_don_vi": "Khoa Kế toán", "don_vi_cha": 6, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 13,
+        "fields": { "ma_don_vi": "K_NGOAINGU", "ten_don_vi": "Khoa Ngoại ngữ", "don_vi_cha": 3, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 14,
+        "fields": { "ma_don_vi": "K_SP", "ten_don_vi": "Khoa Sư phạm", "don_vi_cha": 3, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 15,
+        "fields": { "ma_don_vi": "K_NNTQ", "ten_don_vi": "Khoa Ngôn ngữ Trung Quốc", "don_vi_cha": 3, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 16,
+        "fields": { "ma_don_vi": "K_NNVHNTKNB", "ten_don_vi": "Khoa Ngôn ngữ - Văn hóa - Nghệ thuật Khmer Nam Bộ", "don_vi_cha": 3, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 17,
+        "fields": { "ma_don_vi": "K_QTDLNHKS", "ten_don_vi": "Khoa Quản trị du lịch - Nhà hàng - Khách sạn", "don_vi_cha": 3, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 18,
+        "fields": { "ma_don_vi": "K_YD", "ten_don_vi": "Khoa Y - Dược", "don_vi_cha": 4, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 19,
+        "fields": { "ma_don_vi": "K_RHM", "ten_don_vi": "Khoa Răng Hàm Mặt", "don_vi_cha": 4, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 20,
+        "fields": { "ma_don_vi": "K_GDTC", "ten_don_vi": "Khoa Giáo dục Thể chất", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 21,
+        "fields": { "ma_don_vi": "K_KHCB", "ten_don_vi": "Khoa Khoa học cơ bản", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 22,
+        "fields": { "ma_don_vi": "K_KTCN", "ten_don_vi": "Khoa Kỹ thuật và Công nghệ", "don_vi_cha": 5, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 23,
+        "fields": { "ma_don_vi": "K_LLCT", "ten_don_vi": "Khoa Lý luận Chính trị", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 24,
+        "fields": { "ma_don_vi": "K_NN_TS", "ten_don_vi": "Khoa Nông Nghiệp - Thủy Sản", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 25,
+        "fields": { "ma_don_vi": "K_QLNN_QTVP_DL", "ten_don_vi": "Khoa Quản lý Nhà nước, Quản trị Văn phòng và Du lịch", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 26,
+        "fields": { "ma_don_vi": "K_DBDH", "ten_don_vi": "Khoa Dự bị Đại học", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 27,
+        "fields": { "ma_don_vi": "BM_HHUD", "ten_don_vi": "Khoa Hóa Học ứng Dụng", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 28,
+        "fields": { "ma_don_vi": "BM_CNTY", "ten_don_vi": "Bộ môn Chăn nuôi Thú y", "don_vi_cha": 24, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 29,
+        "fields": { "ma_don_vi": "BM_CK_DL", "ten_don_vi": "Bộ môn Cơ khí - Động lực", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 30,
+        "fields": { "ma_don_vi": "BM_CNTT", "ten_don_vi": "Bộ môn Công nghệ Thông tin", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 31,
+        "fields": { "ma_don_vi": "BM_D_DL", "ten_don_vi": "Bộ môn Điện - Điện lạnh", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 32,
+        "fields": { "ma_don_vi": "BM_D_DT", "ten_don_vi": "Bộ môn Điện - Điện tử", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 33,
+        "fields": { "ma_don_vi": "BM_DT_VT", "ten_don_vi": "Bộ môn Điện tử - Viễn thông", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 34,
+        "fields": { "ma_don_vi": "BM_DD", "ten_don_vi": "Bộ môn Điều dưỡng", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 35,
+        "fields": { "ma_don_vi": "BM_DINHDUONG", "ten_don_vi": "Bộ môn Dinh dưỡng", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 36,
+        "fields": { "ma_don_vi": "BM_DULICH", "ten_don_vi": "Bộ môn Du lịch", "don_vi_cha": 17, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 37,
+        "fields": { "ma_don_vi": "BM_DUOC", "ten_don_vi": "Bộ môn Dược", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 38,
+        "fields": { "ma_don_vi": "BM_GIAIPHAU", "ten_don_vi": "Bộ môn Giải phẫu", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 39,
+        "fields": { "ma_don_vi": "BM_GDTC", "ten_don_vi": "Bộ môn Giáo dục thể chất", "don_vi_cha": 20, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 40,
+        "fields": { "ma_don_vi": "BM_HOASINH", "ten_don_vi": "Bộ môn Hóa - Sinh", "don_vi_cha": 21, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 41,
+        "fields": { "ma_don_vi": "BM_KETOAN", "ten_don_vi": "Bộ môn Kế toán", "don_vi_cha": 12, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 42,
+        "fields": { "ma_don_vi": "BM_KHVL", "ten_don_vi": "Bộ môn Khoa học vật liệu", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 43,
+        "fields": { "ma_don_vi": "BM_KT", "ten_don_vi": "Bộ môn Kinh tế", "don_vi_cha": 7, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 44,
+        "fields": { "ma_don_vi": "BM_KTMT", "ten_don_vi": "Bộ môn Kỹ thuật Môi trường", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 45,
+        "fields": { "ma_don_vi": "BM_LUAT", "ten_don_vi": "Bộ môn Luật", "don_vi_cha": 8, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 46,
+        "fields": { "ma_don_vi": "BM_NT", "ten_don_vi": "Bộ môn Nghệ thuật", "don_vi_cha": 16, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 47,
+        "fields": { "ma_don_vi": "BM_NNKHMER", "ten_don_vi": "Bộ môn Ngôn ngữ Khmer", "don_vi_cha": 16, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 48,
+        "fields": { "ma_don_vi": "BM_MACLENIN", "ten_don_vi": "Bộ môn Những nguyên lý cơ bản của Chủ nghĩa Mác - Lênin", "don_vi_cha": 23, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 49,
+        "fields": { "ma_don_vi": "BM_NOITHANKINH", "ten_don_vi": "Bộ môn Nội Thần kinh", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 50,
+        "fields": { "ma_don_vi": "BM_NUCONG", "ten_don_vi": "Bộ môn Nữ công", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 51,
+        "fields": { "ma_don_vi": "BM_QTVP", "ten_don_vi": "Bộ môn Quản trị Văn phòng", "don_vi_cha": 25, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 52,
+        "fields": { "ma_don_vi": "BM_QTVP_TV", "ten_don_vi": "Bộ môn Quản trị Văn phòng - Thư viện", "don_vi_cha": 25, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 53,
+        "fields": { "ma_don_vi": "BM_SINHLY_SBMD", "ten_don_vi": "Bộ môn Sinh lý - Sinh lý bệnh Miễn dịch", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 54,
+        "fields": { "ma_don_vi": "BM_SPMN", "ten_don_vi": "Bộ môn Sư phạm Mầm non", "don_vi_cha": 14, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 55,
+        "fields": { "ma_don_vi": "BM_SPNV", "ten_don_vi": "Bộ môn Sư phạm Ngữ văn", "don_vi_cha": 14, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 56,
+        "fields": { "ma_don_vi": "BM_SPNH", "ten_don_vi": "Bộ môn Sư phạm Nhạc họa", "don_vi_cha": 14, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 57,
+        "fields": { "ma_don_vi": "BM_SPTH", "ten_don_vi": "Bộ môn Sư phạm Tiểu học", "don_vi_cha": 14, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 58,
+        "fields": { "ma_don_vi": "BM_TCNH", "ten_don_vi": "Bộ môn Tài chính- Ngân hàng", "don_vi_cha": 11, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 59,
+        "fields": { "ma_don_vi": "BM_TAMLY_CTXH", "ten_don_vi": "Bộ môn Tâm lý - Công tác xã hội", "don_vi_cha": 3, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 60,
+        "fields": { "ma_don_vi": "BM_TKCN", "ten_don_vi": "Bộ môn Thiết kế công nghiệp", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 61,
+        "fields": { "ma_don_vi": "BM_THUYSAN", "ten_don_vi": "Bộ môn Thủy sản", "don_vi_cha": 24, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 62,
+        "fields": { "ma_don_vi": "BM_TA", "ten_don_vi": "Bộ môn Tiếng Anh", "don_vi_cha": 13, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 63,
+        "fields": { "ma_don_vi": "BM_THOA", "ten_don_vi": "Bộ môn Tiếng hoa", "don_vi_cha": 13, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 64,
+        "fields": { "ma_don_vi": "BM_TPHAP", "ten_don_vi": "Bộ môn Tiếng Pháp", "don_vi_cha": 13, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 65,
+        "fields": { "ma_don_vi": "BM_TOANUD", "ten_don_vi": "Bộ môn Toán ứng dụng", "don_vi_cha": 21, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 66,
+        "fields": { "ma_don_vi": "BM_TT_PTNT", "ten_don_vi": "Bộ môn Trồng trọt và Phát triển Nông thôn", "don_vi_cha": 24, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 67,
+        "fields": { "ma_don_vi": "BM_UDCDLH", "ten_don_vi": "Bộ môn Ứng dụng chất dẻo linh hoạt & Vật liệu Nano", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 68,
+        "fields": { "ma_don_vi": "BM_VHH", "ten_don_vi": "Bộ môn Văn hóa học", "don_vi_cha": 16, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 69,
+        "fields": { "ma_don_vi": "BM_XD", "ten_don_vi": "Bộ môn Xây dựng", "don_vi_cha": 22, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 70,
+        "fields": { "ma_don_vi": "BM_XNYK", "ten_don_vi": "Bộ môn Xét nghiệm Y Khoa", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 71,
+        "fields": { "ma_don_vi": "BM_YHCS", "ten_don_vi": "Bộ môn Y học Cơ sở", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 72,
+        "fields": { "ma_don_vi": "BM_YHCT", "ten_don_vi": "Bộ môn Y học cổ truyền", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 73,
+        "fields": { "ma_don_vi": "BM_YTCC", "ten_don_vi": "Bộ môn Y tế Công cộng", "don_vi_cha": 18, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 74,
+        "fields": { "ma_don_vi": "P_DT", "ten_don_vi": "Phòng Đào tạo", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 75,
+        "fields": { "ma_don_vi": "P_DTSDH", "ten_don_vi": "Phòng Đào tạo Sau đại học", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 76,
+        "fields": { "ma_don_vi": "TT_CNSTH", "ten_don_vi": "Trung tâm Công nghệ Sau thu hoạch", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 77,
+        "fields": { "ma_don_vi": "TT_CNSH", "ten_don_vi": "Trung tâm Công nghệ Sinh học", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 78,
+        "fields": { "ma_don_vi": "TT_DT", "ten_don_vi": "Trung tâm Đào tạo", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 79,
+        "fields": { "ma_don_vi": "TT_DTL_TMDT", "ten_don_vi": "Trung tâm Đào tạo Logistics và Thương mại điện tử", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 80,
+        "fields": { "ma_don_vi": "TT_GDQPAN", "ten_don_vi": "Trung tâm Giáo dục quốc phòng và an ninh Đại học Trà Vinh", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 81,
+        "fields": { "ma_don_vi": "TT_HTPT", "ten_don_vi": "Trung tâm Hỗ trợ Phát triển Dạy và Học", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 82,
+        "fields": { "ma_don_vi": "TT_HocLieu", "ten_don_vi": "Trung tâm Học liệu - Phát triển Dạy và Học", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 83,
+        "fields": { "ma_don_vi": "VP_DOAN", "ten_don_vi": "Văn phòng Đoàn Thanh niên - Hội Sinh viên", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 84,
+        "fields": { "ma_don_vi": "VP_KDBDH", "ten_don_vi": "Văn phòng Khoa Dự bị Đại học", "don_vi_cha": 26, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 85,
+        "fields": { "ma_don_vi": "VP_KKHCB", "ten_don_vi": "Văn phòng Khoa KHCB", "don_vi_cha": 21, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 86,
+        "fields": { "ma_don_vi": "V_KHCNMT", "ten_don_vi": "Viện Khoa học công nghệ môi trường", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 87,
+        "fields": { "ma_don_vi": "V_PTNL", "ten_don_vi": "Viện Phát Triển Nguồn Lực", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    },
+    {
+        "model": "daotao.donvidaotao", "pk": 88,
+        "fields": { "ma_don_vi": "BP_HTPT_HTTT", "ten_don_vi": "Ban Phát triển Hệ thống Công nghệ thông tin", "don_vi_cha": null, "ngay_tao": "2025-06-08T22:30:00Z", "ngay_cap_nhat": "2025-06-08T22:30:00Z" }
+    }
+]

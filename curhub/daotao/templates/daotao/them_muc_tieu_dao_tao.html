@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4">{{ page_title }}</h1>
+
+    <div class="card shadow">
+        <div class="card-header">
+            Thêm Mục tiêu đào tạo cho Chương trình: <strong>{{ ctdt.ten_nganh_ctdt }}</strong>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% include "daotao/partials/_form_fields.html" %}
+                <button type="submit" class="btn btn-primary">Thêm Mục tiêu</button>
+                <a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
