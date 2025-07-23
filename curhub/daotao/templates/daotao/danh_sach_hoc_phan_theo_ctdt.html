@@ -11,40 +11,147 @@
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th>Mã HP</th>
-                <th>Tên Học phần</th>
-                <th>TC LT</th>
-                <th>TC TH</th>
-                <th>Học kỳ dự kiến</th>
-                <th>Bắt buộc</th>
-                <th>Thao tác</th>
+                <th rowspan="3">TT</th>
+                <th rowspan="3">Mã học phần</th>
+                <th rowspan="3">Tên học phần</th>
+                <th rowspan="3">Tổng số tín chỉ</th>
+                <th colspan="2">Lý thuyết</th>
+                <th colspan="2">Thực hành</th>
+                <th rowspan="3">Giờ Tự học và giờ học khác</th>
+                <th rowspan="3">Ghi chú</th>
+            </tr>
+            <tr>
+                <th colspan="4">Giờ dự giảng</th>
+            </tr>
+            <tr>
+                <th>Tín chỉ</th>
+                <th>Số giờ</th>
+                <th>Tín chỉ</th>
+                <th>Số giờ</th>
             </tr>
         </thead>
         <tbody>
-            {% for hp_ctdt in hoc_phan_trong_ctdt %}
+            <!-- Example for HỌC KỲ I -->
             <tr>
-                <td>{{ hp_ctdt.hoc_phan.ma_hoc_phan }}</td>
-                <td>{{ hp_ctdt.hoc_phan.ten_hoc_phan }}</td>
-                <td>{{ hp_ctdt.tin_chi_ly_thuyet_apdung }}</td>
-                <td>{{ hp_ctdt.tin_chi_thuc_hanh_apdung }}</td>
-                <td>{{ hp_ctdt.hoc_ky_du_kien|default:"N/A" }}</td>
-                <td>
-                    {% if hp_ctdt.la_bat_buoc %}
-                        <span class="badge badge-success">Có</span>
-                    {% else %}
-                        <span class="badge badge-secondary">Không</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'daotao:sua_chi_tiet_hp_trong_ctdt' hp_ctdt.id %}" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i> Sửa
-                    </a>
-                    <a href="{% url 'daotao:xoa_chi_tiet_hp_trong_ctdt' hp_ctdt.id %}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash"></i> Xóa
-                    </a>
-                </td>
+                <td colspan="10" class="text-left font-weight-bold">● HỌC KỲ I</td>
             </tr>
-            {% endfor %}
+            <tr>
+                <td>1.</td>
+                <td></td>
+                <td class="text-left">Giáo dục thể chất 1*</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>30</td>
+                <td>20</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td></td>
+                <td class="text-left">Giáo dục Quốc phòng- An ninh</td>
+                <td colspan="5">8 tín chỉ (165 tiết)</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td></td>
+                <td class="text-left">Anh văn không chuyên 1</td>
+                <td>3</td>
+                <td>2</td>
+                <td>30</td>
+                <td>1</td>
+                <td>30</td>
+                <td>90</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td></td>
+                <td class="text-left">Công nghệ số và ứng dụng</td>
+                <td>3</td>
+                <td>1</td>
+                <td>15</td>
+                <td>2</td>
+                <td>60</td>
+                <td>75</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td></td>
+                <td class="text-left">Sinh học và Di truyền</td>
+                <td>2</td>
+                <td>2</td>
+                <td>30</td>
+                <td>0</td>
+                <td>0</td>
+                <td>70</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td></td>
+                <td class="text-left">Hóa học</td>
+                <td>2</td>
+                <td>1</td>
+                <td>15</td>
+                <td>1</td>
+                <td>30</td>
+                <td>55</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>7.</td>
+                <td></td>
+                <td class="text-left">Pháp luật đại cương</td>
+                <td>2</td>
+                <td>1</td>
+                <td>15</td>
+                <td>1</td>
+                <td>30</td>
+                <td>55</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>8.</td>
+                <td></td>
+                <td class="text-left">Giải phẫu</td>
+                <td>2</td>
+                <td>1</td>
+                <td>15</td>
+                <td>1</td>
+                <td>30</td>
+                <td>55</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>9.</td>
+                <td></td>
+                <td class="text-left">Sức khỏe môi trường</td>
+                <td>2</td>
+                <td>1</td>
+                <td>15</td>
+                <td>1</td>
+                <td>30</td>
+                <td>55</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-left font-weight-bold">Tổng cộng</td>
+                <td class="font-weight-bold">16</td>
+                <td class="font-weight-bold">9</td>
+                <td class="font-weight-bold">135</td>
+                <td class="font-weight-bold">7</td>
+                <td class="font-weight-bold">210</td>
+                <td class="font-weight-bold">455</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="10" class="text-left">Chưa kể GDTC&GDQPAN</td>
+            </tr>
         </tbody>
     </table>
 </div>

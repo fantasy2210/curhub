@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}
@@ -18,6 +18,16 @@
             {% csrf_token %}
             <input type="hidden" name="ctdt_pk" value="{{ ctdt.pk }}">
             <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <div class="form-group row">
                     <label for="id_hoc_ky_du_kien_default" class="col-sm-3 col-form-label">Học kỳ dự kiến (mặc định):</label>
                     <div class="col-sm-3">
@@ -43,16 +53,26 @@
                         <input type="text" id="filterTenHP" class="form-control" placeholder="Nhập tên học phần...">
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="filterDonViQL" class="col-sm-2 col-form-label">Lọc theo Đơn vị QL:</label>
+                    <div class="col-sm-4">
+                        <select id="filterDonViQL" class="form-control">
+                            <option value="">Tất cả đơn vị</option>
+                            <!-- Options will be loaded via AJAX or passed from view -->
+                        </select>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table id="hocPhanTable" class="table table-bordered table-striped" style="width:100%;">
                         <thead>
                             <tr>
                                 <th style="width: 5%;"><input type="checkbox" id="selectAll"></th>
                                 <th style="width: 10%;">Mã HP</th>
-                                <th style="width: 30%;">Tên Học Phần</th>
+                                <th style="width: 25%;">Tên Học Phần</th>
                                 <th style="width: 10%;">Tổng TC</th>
-                                <th style="width: 20%;">Đơn vị QL</th>
-                                <th style="width: 25%;">Mô tả</th>
+                                <th style="width: 15%;">Đơn vị QL</th>
+                                <th style="width: 20%;">Mô tả</th>
+                                <th style="width: 10%;">Học kỳ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,13 +89,12 @@
     </div>
 {% endblock content %}
 
-{% block custom_scripts %}
+{% block scripts %}
 <script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/select2/js/select2.full.min.js' %}"></script>
 <script>
 $(document).ready(function() {
-    console.log("Bắt đầu khởi tạo DataTables...");
-
     var table = $('#hocPhanTable').DataTable({
         "processing": true,
         "serverSide": true,
@@ -87,11 +106,7 @@ $(document).ready(function() {
                 d.format = 'datatables';
                 d.search_ma_hp = $('#filterMaHP').val();
                 d.search_ten_hp = $('#filterTenHP').val();
-                console.log("Đang gửi yêu cầu AJAX với dữ liệu:", d);
-            },
-            "dataSrc": function(json) {
-                console.log("Đã nhận phản hồi từ server:", json);
-                return json.data;
+                d.search_don_vi_ql = $('#filterDonViQL').val();
             },
             "error": function (xhr, error, thrown) {
                 console.error("Lỗi AJAX DataTables:", error, thrown);
@@ -104,24 +119,94 @@ $(document).ready(function() {
             { "data": 2 },
             { "data": 3 },
             { "data": 4 },
-            { "data": 5, "orderable": false }
+            { "data": 5, "orderable": false },
+            { "data": 6, "orderable": false }
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Vietnamese.json"
+        },
+        "initComplete": function(settings, json) {
+            $.ajax({
+                url: "{% url 'daotao:get_don_vi_dao_tao_options' %}",
+                type: "GET",
+                success: function(data) {
+                    var select = $('#filterDonViQL');
+                    $.each(data, function(key, value) {
+                        select.append($('<option></option>').attr('value', value.pk).text(value.ten_don_vi));
+                    });
+                    select.select2({
+                        placeholder: "Chọn đơn vị quản lý",
+                        allowClear: true,
+                        theme: 'bootstrap4'
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Lỗi khi tải danh sách đơn vị quản lý:", error);
+                }
+            });
         }
     });
 
-    console.log("Đã khởi tạo DataTables.");
-
     // Custom filter trigger
     $('#filterMaHP, #filterTenHP').on('keyup change', function () {
-        console.log("Bộ lọc đã thay đổi, đang tải lại bảng...");
         table.ajax.reload();
+    });
+
+    $('#filterDonViQL').on('change', function () {
+        table.ajax.reload();
+    });
+
+    // Handle "select all" checkbox
+    $('#selectAll').on('click', function(){
+        var rows = table.rows({ 'search': 'applied' }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    // Handle click on checkbox to set state of "select all" control
+    $('#hocPhanTable tbody').on('change', 'input[type="checkbox"]', function(){
+        if(!this.checked){
+            var el = $('#selectAll').get(0);
+            if(el && el.checked && ('indeterminate' in el)){
+                el.indeterminate = true;
+            }
+        }
+    });
+
+    // Handle form submission
+    $('#bulkAddForm').on('submit', function(e) {
+        var form = this;
+        // Prevent double submission
+        e.preventDefault();
+
+        // Iterate over all checkboxes in the table
+        table.$('input[type="checkbox"]:checked').each(function(){
+            var row = $(this).closest('tr');
+            var hocKyInput = row.find('input[name="hoc_ky"]');
+            // Append the selected course
+            $(form).append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'selected_hoc_phan')
+                    .val(this.value)
+            );
+            // Append the semester value
+            $(form).append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'hoc_ky_' + this.value)
+                    .val(hocKyInput.val())
+            );
+        });
+
+        // And submit the form
+        form.submit();
     });
 });
 </script>
-{% endblock custom_scripts %}
+{% endblock scripts %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminlte/plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 {% endblock extra_css %}

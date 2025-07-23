@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 {% load form_tags %}
 
-{% block title %}CURHUB | Cập nhật Học Phần{% endblock %}
+{% block title %}Cập nhật Học phần{% endblock %}
 
-{% block page_title %}Cập nhật Học Phần{% endblock %}
+{% block page_title %}Cập nhật thông tin học phần{% endblock %}
 
 {% block breadcrumb_items %}
     <li class="breadcrumb-item"><a href="{% url 'daotao:danh_sach_hoc_phan' %}">Quản lý Học phần</a></li>
@@ -11,81 +12,125 @@
 {% endblock %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-primary card-outline mb-4">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-info-circle me-2"></i>Thông tin Học Phần</h3>
-                </div>
-                <div class="card-body">
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">Học phần: {{ form.instance.ten_hoc_phan }}</h3>
+    </div>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="row">
+                <!-- Cột trái -->
+                <div class="col-md-6">
+                    <h5>Thông tin cơ bản</h5>
+                    <hr>
+                    <div class="form-group">
+                        {{ form.ma_hoc_phan.label_tag }}
+                        {{ form.ma_hoc_phan|add_class:"form-control" }}
+                        {% if form.ma_hoc_phan.errors %}<div class="invalid-feedback d-block">{{ form.ma_hoc_phan.errors }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.ten_hoc_phan.label_tag }}
+                        {{ form.ten_hoc_phan|add_class:"form-control" }}
+                        {% if form.ten_hoc_phan.errors %}<div class="invalid-feedback d-block">{{ form.ten_hoc_phan.errors }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.ten_tieng_anh.label_tag }}
+                        {{ form.ten_tieng_anh|add_class:"form-control" }}
+                        {% if form.ten_tieng_anh.errors %}<div class="invalid-feedback d-block">{{ form.ten_tieng_anh.errors }}</div>{% endif %}
+                    </div>
+
+                    <h5>Phân bổ Tín chỉ & Giờ học</h5>
+                    <hr>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.ma_hoc_phan.id_for_label }}" class="form-label">{{ form.ma_hoc_phan.label }}</label>
-                            {{ form.ma_hoc_phan|add_class:"" }}
-                            {% if form.ma_hoc_phan.errors %}<div class="text-danger">{{ form.ma_hoc_phan.errors }}</div>{% endif %}
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                {{ form.tong_so_tin_chi_goc.label_tag }}
+                                {{ form.tong_so_tin_chi_goc|add_class:"form-control" }}
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.ten_hoc_phan.id_for_label }}" class="form-label">{{ form.ten_hoc_phan.label }}</label>
-                            {{ form.ten_hoc_phan|add_class:"" }}
-                            {% if form.ten_hoc_phan.errors %}<div class="text-danger">{{ form.ten_hoc_phan.errors }}</div>{% endif %}
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                {{ form.tin_chi_ly_thuyet_goc.label_tag }}
+                                {{ form.tin_chi_ly_thuyet_goc|add_class:"form-control" }}
+                            </div>
                         </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="{{ form.ten_tieng_anh.id_for_label }}" class="form-label">{{ form.ten_tieng_anh.label }}</label>
-                            {{ form.ten_tieng_anh|add_class:"" }}
-                            {% if form.ten_tieng_anh.errors %}<div class="text-danger">{{ form.ten_tieng_anh.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.tin_chi_ly_thuyet_goc.id_for_label }}" class="form-label">{{ form.tin_chi_ly_thuyet_goc.label }}</label>
-                            {{ form.tin_chi_ly_thuyet_goc|add_class:"" }}
-                            {% if form.tin_chi_ly_thuyet_goc.errors %}<div class="text-danger">{{ form.tin_chi_ly_thuyet_goc.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.tin_chi_thuc_hanh_goc.id_for_label }}" class="form-label">{{ form.tin_chi_thuc_hanh_goc.label }}</label>
-                            {{ form.tin_chi_thuc_hanh_goc|add_class:"" }}
-                            {% if form.tin_chi_thuc_hanh_goc.errors %}<div class="text-danger">{{ form.tin_chi_thuc_hanh_goc.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.tong_so_tin_chi_goc.id_for_label }}" class="form-label">{{ form.tong_so_tin_chi_goc.label }}</label>
-                            {{ form.tong_so_tin_chi_goc|add_class:"" }}
-                            {% if form.tong_so_tin_chi_goc.errors %}<div class="text-danger">{{ form.tong_so_tin_chi_goc.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="{{ form.mo_ta_hoc_phan.id_for_label }}" class="form-label">{{ form.mo_ta_hoc_phan.label }}</label>
-                            {{ form.mo_ta_hoc_phan|add_class:"" }}
-                            {% if form.mo_ta_hoc_phan.errors %}<div class="text-danger">{{ form.mo_ta_hoc_phan.errors }}</div>{% endif %}
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                {{ form.tin_chi_thuc_hanh_goc.label_tag }}
+                                {{ form.tin_chi_thuc_hanh_goc|add_class:"form-control" }}
+                            </div>
                         </div>
                     </div>
+                     <div class="row">
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_ly_thuyet_goc.label_tag }}{{ form.so_gio_ly_thuyet_goc|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_thuc_hanh_goc.label_tag }}{{ form.so_gio_thuc_hanh_goc|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_tu_hoc_goc.label_tag }}{{ form.so_gio_tu_hoc_goc|add_class:"form-control" }}</div></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_bai_tap_goc.label_tag }}{{ form.so_gio_bai_tap_goc|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_do_an_goc.label_tag }}{{ form.so_gio_do_an_goc|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_luan_an_goc.label_tag }}{{ form.so_gio_luan_an_goc|add_class:"form-control" }}</div></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_thuc_tap_goc.label_tag }}{{ form.so_gio_thuc_tap_goc|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_bai_tap_lon_goc.label_tag }}{{ form.so_gio_bai_tap_lon_goc|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-4"><div class="form-group">{{ form.so_gio_lms_goc.label_tag }}{{ form.so_gio_lms_goc|add_class:"form-control" }}</div></div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-6"><div class="form-group">{{ form.so_tiet_tong_cong.label_tag }}{{ form.so_tiet_tong_cong|add_class:"form-control" }}</div></div>
+                        <div class="col-sm-6"><div class="form-group">{{ form.so_tin_chi_ects.label_tag }}{{ form.so_tin_chi_ects|add_class:"form-control" }}</div></div>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save me-2"></i>Lưu Học Phần</button>
-                        <a href="{% url 'daotao:danh_sach_hoc_phan' %}" class="btn btn-secondary">Hủy</a>
+
+                <!-- Cột phải -->
+                <div class="col-md-6">
+                    <h5>Thông tin quản lý & Mô tả</h5>
+                    <hr>
+                    <div class="form-group">
+                        {{ form.don_vi_quan_ly_goc.label_tag }}
+                        {{ form.don_vi_quan_ly_goc|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.edusoft_id.label_tag }}
+                        {{ form.edusoft_id|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.mo_ta_hoc_phan.label_tag }}
+                        {{ form.mo_ta_hoc_phan|add_class:"form-control" }}
+                        {% if form.mo_ta_hoc_phan.errors %}<div class="invalid-feedback d-block">{{ form.mo_ta_hoc_phan.errors }}</div>{% endif %}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form.la_hoc_phan_tu_chon|add_class:"form-check-input" }}
+                            {{ form.la_hoc_phan_tu_chon.label_tag }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form.khong_tinh_diem_tb|add_class:"form-check-input" }}
+                            {{ form.khong_tinh_diem_tb.label_tag }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
-{% endblock content %}
+        <div class="card-footer text-right">
+            <a href="{% url 'daotao:danh_sach_hoc_phan' %}" class="btn btn-secondary">Hủy</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Lưu thay đổi</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
 
-{% block custom_scripts %}
+{% block scripts %}
 <script>
-  $(function () {
-    // Initialize Summernote for the textarea fields
-    $('#id_mo_ta_hoc_phan').summernote({
-        height: 150,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
+$(function () {
+    // Initialize Select2 Elements
+    $('.select2').select2({
+        theme: 'bootstrap4'
     });
-  })
+});
 </script>
-{% endblock custom_scripts %}
+{% endblock %}

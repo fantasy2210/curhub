@@ -1,24 +1,28 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'daotao/base.html' %}
 
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}
+    Xác nhận Xóa Học phần - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    XÁC NHẬN XÓA HỌC PHẦN KHỎI CHƯƠNG TRÌNH ĐÀO TẠO
+{% endblock header_title %}
 
 {% block content %}
-<div class="container-fluid">
-    <h1 class="h3 mb-4">{{ page_title }}</h1>
-
-    <div class="card shadow">
+    <div class="card card-danger">
         <div class="card-header">
-            Xác nhận xóa Học phần trong Chương trình Đào tạo
+            <h3 class="card-title">Xác nhận Xóa</h3>
         </div>
         <div class="card-body">
-            <p>Bạn có chắc chắn muốn xóa học phần <strong>"{{ chi_tiet_hp.hoc_phan.ten_hoc_phan }}"</strong> khỏi chương trình <strong>"{{ ctdt.ten_nganh_ctdt }}"</strong> không?</p>
-            <form method="post">
+            <p>Bạn có chắc chắn muốn xóa học phần <strong>{{ chi_tiet.hoc_phan.ten_hoc_phan }}</strong> (Mã HP: {{ chi_tiet.hoc_phan.ma_hoc_phan }}) khỏi chương trình đào tạo <strong>{{ ctdt.ten_nganh_ctdt }}</strong> không?</p>
+            <p class="text-danger">Hành động này không thể hoàn tác.</p>
+        </div>
+        <div class="card-footer">
+            <form method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
-                <a href="{% url 'daotao:chi_tiet_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+                <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=ctdt.pk %}#hocphan-tab-pane" class="btn btn-secondary">Hủy bỏ</a>
             </form>
         </div>
     </div>
-</div>
-{% endblock %}
+{% endblock content %}

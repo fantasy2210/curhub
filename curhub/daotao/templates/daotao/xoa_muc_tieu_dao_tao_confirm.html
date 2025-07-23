@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}{{ page_title }}{% endblock %}
 
@@ -9,14 +8,21 @@
 
     <div class="card shadow">
         <div class="card-header">
-            Xác nhận xóa Mục tiêu đào tạo
+            Xác nhận Xóa Mục tiêu Đào tạo
         </div>
         <div class="card-body">
-            <p>Bạn có chắc chắn muốn xóa Mục tiêu đào tạo <strong>"{{ mt.ma_mt }}"</strong> khỏi chương trình <strong>"{{ ctdt.ten_nganh_ctdt }}"</strong> không?</p>
+            <p>Bạn có chắc chắn muốn xóa Mục tiêu Đào tạo sau đây không?</p>
+            <ul>
+                <li><strong>Mã PO:</strong> {{ object.ma_muc_tieu }}</li>
+                <li><strong>Nội dung:</strong> {{ object.noi_dung }}</li>
+                <li><strong>Thuộc CTĐT:</strong> {{ ctdt.ten_nganh_ctdt }}</li>
+            </ul>
+            <p class="text-danger">Hành động này không thể hoàn tác.</p>
+            
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
-                <a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+                <a href="{% url 'daotao:chi_tiet_ctdt' ctdt.id %}#po-tab-pane" class="btn btn-secondary">Hủy</a>
             </form>
         </div>
     </div>

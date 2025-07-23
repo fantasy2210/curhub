@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'daotao/base.html' %}
 {% load form_tags %}
 
 {% block title %}CURHUB | Thêm CTĐT{% endblock %}
@@ -13,6 +13,38 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
+
+    {# --- START: Display Messages and Form Errors --- #}
+    {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if form.non_field_errors or form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+            {% if form.errors %}
+                <p class="mb-1">Vui lòng sửa các lỗi sau:</p>
+                <ul>
+                {% for field, errors in form.errors.items %}
+                    <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endif %}
+    {# --- END: Display Messages and Form Errors --- #}
+
     <div class="row">
         <!-- CỘT BÊN TRÁI CHO CÁC THÔNG TIN CHÍNH -->
         <div class="col-lg-8">
@@ -23,12 +55,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.ma_nganh_ctdt.id_for_label }}" class="form-label">{{ form.ma_nganh_ctdt.label }}</label>
+                            <label for="{{ form.ma_nganh_ctdt.id_for_label }}" class="form-label">{{ form.ma_nganh_ctdt.label }} <span class="text-danger">*</span></label>
                             {{ form.ma_nganh_ctdt|add_class:"" }}
                             {% if form.ma_nganh_ctdt.errors %}<div class="text-danger">{{ form.ma_nganh_ctdt.errors }}</div>{% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.ten_nganh_ctdt.id_for_label }}" class="form-label">{{ form.ten_nganh_ctdt.label }}</label>
+                            <label for="{{ form.ten_nganh_ctdt.id_for_label }}" class="form-label">{{ form.ten_nganh_ctdt.label }} <span class="text-danger">*</span></label>
                             {{ form.ten_nganh_ctdt|add_class:"" }}
                             {% if form.ten_nganh_ctdt.errors %}<div class="text-danger">{{ form.ten_nganh_ctdt.errors }}</div>{% endif %}
                         </div>
@@ -84,16 +116,26 @@
                     </div>
                     <div class="mb-3">
                         {{ form.nganh_hoc_chung.label_tag }}
-                        {{ form.nganh_hoc_chung|add_class:"" }}
+                        <div class="input-group">
+                            {{ form.nganh_hoc_chung|add_class:"" }}
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary" onclick="openAddNganhWindow()">
+                                    <i class="fas fa-plus"></i> Thêm
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="refreshNganhHocChung()">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
                         {% if form.nganh_hoc_chung.errors %}<div class="text-danger">{{ form.nganh_hoc_chung.errors }}</div>{% endif %}
                     </div>
                     <div class="mb-3">
-                        {{ form.trinh_do_dao_tao.label_tag }}
+                        <label for="{{ form.trinh_do_dao_tao.id_for_label }}" class="form-label">{{ form.trinh_do_dao_tao.label }} <span class="text-danger">*</span></label>
                         {{ form.trinh_do_dao_tao|add_class:"" }}
                         {% if form.trinh_do_dao_tao.errors %}<div class="text-danger">{{ form.trinh_do_dao_tao.errors }}</div>{% endif %}
                     </div>
                     <div class="mb-3">
-                        {{ form.hinh_thuc_dao_tao.label_tag }}
+                        <label for="{{ form.hinh_thuc_dao_tao.id_for_label }}" class="form-label">{{ form.hinh_thuc_dao_tao.label }} <span class="text-danger">*</span></label>
                         {{ form.hinh_thuc_dao_tao|add_class:"" }}
                         {% if form.hinh_thuc_dao_tao.errors %}<div class="text-danger">{{ form.hinh_thuc_dao_tao.errors }}</div>{% endif %}
                     </div>
@@ -129,6 +171,36 @@
 
 {% block custom_scripts %}
 <script>
+  function openAddNganhWindow() {
+    window.open("{% url 'daotao:them_nganh_dao_tao' %}", "_blank", "width=800,height=600");
+  }
+
+  function refreshNganhHocChung() {
+    $.ajax({
+      url: "{% url 'daotao:get_nganh_dao_tao_options' %}", // Create this URL in urls.py and view in views.py
+      type: "GET",
+      success: function(data) {
+        var select = $('#id_nganh_hoc_chung');
+        select.empty();
+        select.append($('<option>', {
+          value: '',
+          text: '---------'
+        }));
+        $.each(data, function(key, value) {
+          select.append($('<option>', {
+            value: value.pk,
+            text: value.ten_nganh
+          }));
+        });
+        select.val('').trigger('change'); // Reset to default or previously selected
+      },
+      error: function(xhr, status, error) {
+        console.error("Error refreshing Nganh Hoc Chung:", error);
+        alert("Không thể tải lại danh sách ngành học. Vui lòng thử lại.");
+      }
+    });
+  }
+
   $(function () {
     //Initialize Select2 Elements
     $('#id_don_vi_quan_ly').select2({

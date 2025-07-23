@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 
 {% block title %}CURHUB | Chi tiết CTĐT{% endblock %}
 
@@ -83,6 +84,9 @@
             </div>
             <div class="tab-pane fade p-3" id="hocphan-tab-pane" role="tabpanel">
                 <div class="mb-3 text-right">
+                    <a href="{% url 'daotao:them_hoc_phan_vao_ctdt' pk_ctdt=ctdt.pk %}" class="btn btn-primary btn-sm mr-2">
+                        <i class="fas fa-plus mr-1"></i> Thêm Học phần
+                    </a>
                     <a href="{% url 'daotao:them_hoc_phan_hang_loat' pk_ctdt=ctdt.pk %}" class="btn btn-success btn-sm mr-2">
                         <i class="fas fa-plus-circle mr-1"></i> Thêm Học phần hàng loạt
                     </a>
@@ -90,46 +94,83 @@
                         <i class="fas fa-upload mr-1"></i> Tải lên danh sách Học phần (Excel/CSV)
                     </a>
                 </div>
+                {% if ctdt.trang_thai == 'DRAFT' %}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle mr-1"></i> Bạn có thể nhấp vào các ô trong bảng (trừ Mã HP, Tên Học Phần, Tổng TC (Áp dụng) và Hành động) để sửa trực tiếp thông tin học phần.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
                 <h5>Danh sách học phần trong chương trình</h5>
                 <div class="table-responsive">
                     {% if hoc_phan_trong_ctdt %}
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-hover" id="hocPhanCTDTTable">
                         <thead>
                             <tr>
-                                <th>Mã HP</th>
-                                <th>Tên Học Phần</th>
-                                <th>Học kỳ DK</th>
-                                <th>TC LT</th>
-                                <th>TC TH</th>
-                                <th>Giờ LT</th>
-                                <th>Giờ TH</th>
-                                <th>Giờ Tự học</th>
-                                <th>Tiết LT Online</th>
-                                <th>Tổng TC (Áp dụng)</th>
-                                <th>Bắt buộc?</th>
-                                <th>Hành động</th>
+                                <th rowspan="2">TT</th>
+                                <th rowspan="2">Mã học phần</th>
+                                <th rowspan="2">Tên học phần</th>
+                                <th rowspan="2">Tổng số tiết</th>
+                                <th colspan="2">Lý thuyết</th>
+                                <th colspan="2">Thực hành</th>
+                                <th rowspan="2">Tự học và khác</th>
+                                <th rowspan="2">Ghi chú</th>
+                                <th rowspan="2">Hành động</th>
+                            </tr>
+                            <tr>
+                                <th>Tín chỉ</th>
+                                <th>Số giờ</th>
+                                <th>Tín chỉ</th>
+                                <th>Số giờ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for hp_ctdt in hoc_phan_trong_ctdt %}
-                            <tr>
-                                <td>{{ hp_ctdt.hoc_phan.ma_hoc_phan }}</td>
-                                <td>{{ hp_ctdt.hoc_phan.ten_hoc_phan }}</td>
-                                <td>{{ hp_ctdt.hoc_ky_du_kien|default:"-" }}</td>
-                                <td>{{ hp_ctdt.tin_chi_ly_thuyet_apdung|default:"-" }}</td>
-                                <td>{{ hp_ctdt.tin_chi_thuc_hanh_apdung|default:"-" }}</td>
-                                <td>{{ hp_ctdt.so_gio_ly_thuyet_apdung|default:"-" }}</td>
-                                <td>{{ hp_ctdt.so_gio_thuc_hanh_apdung|default:"-" }}</td>
-                                <td>{{ hp_ctdt.so_gio_tu_hoc_apdung|default:"-" }}</td>
-                                <td>{{ hp_ctdt.so_tiet_ly_thuyet_online|default:"-" }}</td>
-                                <td>{{ hp_ctdt.tong_so_tin_chi_apdung }}</td>
-                                <td>{% if hp_ctdt.la_bat_buoc %}Có{% else %}Không{% endif %}</td>
-                                <td>
-                                    <a href="{% url 'daotao:chi_tiet_hoc_phan_trong_ctdt' pk_chi_tiet_hp=hp_ctdt.pk %}" class="btn btn-info btn-sm">Xem</a>
-                                    <a href="{% url 'daotao:sua_chi_tiet_hp_trong_ctdt' pk_chi_tiet_hp=hp_ctdt.pk %}" class="btn btn-warning btn-sm">Sửa</a>
-                                    <a href="{% url 'daotao:xoa_chi_tiet_hp_trong_ctdt' pk_chi_tiet_hp=hp_ctdt.pk %}" class="btn btn-danger btn-sm">Xóa</a>
-                                </td>
-                            </tr>
+                            {% regroup hoc_phan_trong_ctdt by hoc_ky_du_kien as semesters %}
+                            {% for semester in semesters %}
+                                {% if semester.grouper %}
+                                    <tr>
+                                        <td colspan="11" class="text-left font-weight-bold">● HỌC KỲ {{ semester.grouper }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="11" class="text-left font-weight-bold">● HỌC KỲ KHÔNG XÁC ĐỊNH</td>
+                                    </tr>
+                                {% endif %}
+                                {% for hp_ctdt in semester.list %}
+                                <tr data-pk="{{ hp_ctdt.pk }}">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ hp_ctdt.hoc_phan.ma_hoc_phan }}</td>
+                                    <td class="text-left">{{ hp_ctdt.hoc_phan.ten_hoc_phan }}</td>
+                                    <td>{{ hp_ctdt.tong_so_gio_hoc_apdung }}</td>
+                                    <td class="editable" data-name="tin_chi_ly_thuyet_apdung" data-type="number">{{ hp_ctdt.tin_chi_ly_thuyet_apdung|default:"-" }}</td>
+                                    <td class="editable" data-name="so_gio_ly_thuyet_apdung" data-type="number">{{ hp_ctdt.so_gio_ly_thuyet_apdung|default:"-" }}</td>
+                                    <td class="editable" data-name="tin_chi_thuc_hanh_apdung" data-type="number">{{ hp_ctdt.tin_chi_thuc_hanh_apdung|default:"-" }}</td>
+                                    <td class="editable" data-name="so_gio_thuc_hanh_apdung" data-type="number">{{ hp_ctdt.so_gio_thuc_hanh_apdung|default:"-" }}</td>
+                                    <td class="editable" data-name="so_gio_tu_hoc_apdung" data-type="number">{{ hp_ctdt.so_gio_tu_hoc_apdung|default:"-" }}</td>
+                                    <td class="editable" data-name="ghi_chu_trong_ctdt" data-type="text">{{ hp_ctdt.ghi_chu_trong_ctdt|default:"" }}</td>
+                                    <td>
+                                        <a href="{% url 'daotao:chi_tiet_hoc_phan_trong_ctdt' pk_chi_tiet_hp=hp_ctdt.pk %}" class="btn btn-info btn-sm">Xem</a>
+                                        {% if ctdt.trang_thai == 'DRAFT' %}
+                                        <a href="{% url 'daotao:sua_chi_tiet_hp_trong_ctdt' pk_chi_tiet_hp=hp_ctdt.pk %}" class="btn btn-warning btn-sm">Sửa</a>
+                                        <a href="{% url 'daotao:xoa_chi_tiet_hp_trong_ctdt' pk_chi_tiet_hp=hp_ctdt.pk %}" class="btn btn-danger btn-sm">Xóa</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% if semester.grouper %}
+                                    <tr>
+                                        <td colspan="3" class="text-left font-weight-bold">Tổng cộng Học kỳ {{ semester.grouper }}</td>
+                                        <td class="font-weight-bold">{{ semester.list|sum_attribute:'tong_so_tin_chi_apdung' }}</td>
+                                        <td class="font-weight-bold">{{ semester.list|sum_attribute:'tin_chi_ly_thuyet_apdung' }}</td>
+                                        <td class="font-weight-bold">{{ semester.list|sum_attribute:'so_gio_ly_thuyet_apdung' }}</td>
+                                        <td class="font-weight-bold">{{ semester.list|sum_attribute:'tin_chi_thuc_hanh_apdung' }}</td>
+                                        <td class="font-weight-bold">{{ semester.list|sum_attribute:'so_gio_thuc_hanh_apdung' }}</td>
+                                        <td class="font-weight-bold">{{ semester.list|sum_attribute:'so_gio_tu_hoc_apdung' }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -146,29 +187,40 @@
                 </div>
                 <h5>Danh sách chuẩn đầu ra (PLO)</h5>
                 <div class="table-responsive">
-                    {% if chuan_dau_ra_ctdt %}
+                    {% if plo_groups %}
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Mã CĐR</th>
-                                <th>Mô tả</th>
-                                <th>Loại CĐR</th>
-                                <th>Mức độ</th>
-                                <th>Hành động</th>
+                                <th style="width: 10%;">PLO</th>
+                                <th>Nội dung</th>
+                                {% for po in muc_tieu_dao_tao_ctdt %}
+                                <th class="text-center" style="width: 5%;">{{ po.ma_muc_tieu }}</th>
+                                {% endfor %}
+                                <th style="width: 10%;">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for cdr in chuan_dau_ra_ctdt %}
-                            <tr>
-                                <td>{{ cdr.ma_chuan_dau_ra }}</td>
-                                <td>{{ cdr.noi_dung }}</td>
-                                <td>{{ cdr.get_loai_cdr_display|default:"-" }}</td>
-                                <td>{{ cdr.muc_do_dap_ung|default:"-" }}</td>
-                                <td>
-                                    <a href="{% url 'daotao:sua_chuan_dau_ra' pk_cdr=cdr.pk %}" class="btn btn-warning btn-sm">Sửa</a>
-                                    <a href="{% url 'daotao:xoa_chuan_dau_ra' pk_cdr=cdr.pk %}" class="btn btn-danger btn-sm">Xóa</a>
-                                </td>
-                            </tr>
+                            {% for group_name, plos in plo_groups.items %}
+                                <tr class="table-light">
+                                    <td colspan="{{ 3|add:muc_tieu_dao_tao_ctdt.count }}"><strong>{{ group_name }}</strong></td>
+                                </tr>
+                                {% for plo in plos %}
+                                <tr>
+                                    <td>{{ plo.ma_cdr }}</td>
+                                    <td>{{ plo.noi_dung }}</td>
+                                    {% for po in muc_tieu_dao_tao_ctdt %}
+                                    <td class="text-center">
+                                        {% if po.pk in plo.related_pos_pks %}
+                                            X
+                                        {% endif %}
+                                    </td>
+                                    {% endfor %}
+                                    <td>
+                                        <a href="{% url 'daotao:sua_chuan_dau_ra' pk_cdr=plo.pk %}" class="btn btn-warning btn-sm">Sửa</a>
+                                        <a href="{% url 'daotao:xoa_chuan_dau_ra' pk_cdr=plo.pk %}" class="btn btn-danger btn-sm">Xóa</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -186,7 +238,7 @@
                 <h5>Danh sách Mục tiêu Đào tạo (PO)</h5>
                 <div class="table-responsive">
                     {% if muc_tieu_dao_tao_ctdt %}
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" id="poTable">
                         <thead>
                             <tr>
                                 <th>Mã PO</th>
@@ -198,9 +250,9 @@
                         </thead>
                         <tbody>
                             {% for po in muc_tieu_dao_tao_ctdt %}
-                            <tr>
-                                <td>{{ po.ma_muc_tieu }}</td>
-                                <td>{{ po.noi_dung }}</td>
+                            <tr data-pk="{{ po.pk }}">
+                                <td class="editable" data-name="ma_muc_tieu" data-type="text">{{ po.ma_muc_tieu }}</td>
+                                <td class="editable" data-name="noi_dung" data-type="textarea">{{ po.noi_dung }}</td>
                                 <td>{{ po.ngay_tao|date:"H:i:s d/m/Y" }}</td>
                                 <td>{{ po.ngay_cap_nhat|date:"H:i:s d/m/Y" }}</td>
                                 <td>
@@ -249,3 +301,140 @@
     </div>
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Only enable inline editing if the CTDT is in DRAFT status
+    var isDraft = "{{ ctdt.trang_thai }}" === "DRAFT";
+
+    if (isDraft) {
+        // --- INLINE EDITING FOR HOC PHAN ---
+        $('#hocPhanCTDTTable').on('click', '.editable', function() {
+            var $cell = $(this);
+            if ($cell.find('input, select').length) return;
+
+            var originalContent = $cell.text().trim();
+            var fieldName = $cell.data('name');
+            var fieldType = $cell.data('type');
+            var pk = $cell.closest('tr').data('pk');
+            var inputElement;
+
+            if (fieldType === 'number') {
+                inputElement = $('<input type="number" class="form-control form-control-sm">').val(originalContent === '-' ? '' : originalContent);
+            } else if (fieldType === 'select' && fieldName === 'la_bat_buoc') {
+                inputElement = $('<select class="form-control form-control-sm">');
+                inputElement.append($('<option>', { value: 'True', text: 'Có' }));
+                inputElement.append($('<option>', { value: 'False', text: 'Không' }));
+                inputElement.val($cell.data('value'));
+            } else {
+                inputElement = $('<input type="text" class="form-control form-control-sm">').val(originalContent);
+            }
+
+            $cell.html(inputElement);
+            inputElement.focus();
+
+            var saveHocPhanChanges = function() {
+                var newValue = inputElement.val();
+                var displayValue = newValue;
+
+                if (fieldType === 'number' && newValue === '') {
+                    newValue = null;
+                    displayValue = '-';
+                } else if (fieldType === 'select' && fieldName === 'la_bat_buoc') {
+                    displayValue = (newValue === 'True' ? 'Có' : 'Không');
+                }
+                
+                $cell.text(displayValue);
+
+                $.ajax({
+                    url: "{% url 'daotao:update_chi_tiet_hoc_phan_inline' %}",
+                    type: "POST",
+                    data: { 'pk': pk, 'field': fieldName, 'value': newValue, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            toastr.success('Cập nhật học phần thành công!');
+                            if (fieldName === 'la_bat_buoc') {
+                                $cell.text(response.new_value ? 'Có' : 'Không');
+                                $cell.data('value', response.new_value ? 'True' : 'False');
+                            } else {
+                                $cell.text(response.new_value === null ? '-' : response.new_value);
+                            }
+                        } else {
+                            toastr.error('Lỗi: ' + response.message);
+                            $cell.text(originalContent);
+                        }
+                    },
+                    error: function() {
+                        toastr.error('Lỗi AJAX khi cập nhật học phần.');
+                        $cell.text(originalContent);
+                    }
+                });
+            };
+
+            inputElement.on('blur', saveHocPhanChanges).on('keypress', function(e) {
+                if (e.which == 13) { e.preventDefault(); saveHocPhanChanges(); }
+            });
+        });
+
+        // --- INLINE EDITING FOR PO ---
+        $('#poTable').on('click', '.editable', function() {
+            var $cell = $(this);
+            if ($cell.find('input, textarea').length) return;
+
+            var originalContent = $cell.text().trim();
+            var fieldName = $cell.data('name');
+            var fieldType = $cell.data('type');
+            var pk = $cell.closest('tr').data('pk');
+            var inputElement;
+
+            if (fieldType === 'textarea') {
+                inputElement = $('<textarea class="form-control form-control-sm" style="height: 120px;"></textarea>').val(originalContent);
+            } else {
+                inputElement = $('<input type="text" class="form-control form-control-sm">').val(originalContent);
+            }
+
+            $cell.html(inputElement);
+            inputElement.focus();
+
+            var savePoChanges = function() {
+                var newValue = inputElement.val();
+                $cell.text(newValue);
+
+                $.ajax({
+                    url: "{% url 'daotao:update_muc_tieu_dao_tao_inline' %}",
+                    type: "POST",
+                    data: { 'pk': pk, 'field': fieldName, 'value': newValue, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            toastr.success('Cập nhật mục tiêu thành công!');
+                            $cell.text(response.new_value);
+                        } else {
+                            toastr.error('Lỗi: ' + response.message);
+                            $cell.text(originalContent);
+                        }
+                    },
+                    error: function() {
+                        toastr.error('Lỗi AJAX khi cập nhật mục tiêu.');
+                        $cell.text(originalContent);
+                    }
+                });
+            };
+
+            inputElement.on('blur', savePoChanges).on('keypress', function(e) {
+                if (e.which == 13 && fieldType !== 'textarea') { e.preventDefault(); savePoChanges(); }
+            });
+        });
+
+    } else {
+        // If not in DRAFT, remove editable class from all tables to prevent interaction
+        $('#hocPhanCTDTTable .editable, #poTable .editable').removeClass('editable');
+    }
+    // Activate tab based on URL hash
+    var hash = window.location.hash;
+    if (hash) {
+        $('a[href="' + hash + '"]').tab('show');
+    }
+});
+</script>
+{% endblock scripts %}

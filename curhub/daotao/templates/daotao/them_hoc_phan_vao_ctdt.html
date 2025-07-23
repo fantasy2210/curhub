@@ -1,56 +1,118 @@
-{% extends 'base.html' %}
+{% extends "daotao/base.html" %}
 
-{% load static %}
+{% block daotao_title %}Thêm Học Phần vào CTĐT{% endblock %}
 
-{% block title %}
-    {{ page_title|default:"Thêm Học Phần" }} - {{ block.super }}
-{% endblock title %}
+{% block daotao_page_title %}{{ page_title }}{% endblock %}
 
-{% block header_title %}
-    {{ page_title|default:"THÊM HỌC PHẦN MỚI" }}
-{% endblock header_title %}
+{% block daotao_breadcrumb_items %}
+    <li class="breadcrumb-item"><a href="{% url 'daotao:danh_sach_ctdt' %}">Quản lý CTĐT</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=ctdt.pk %}">{{ ctdt.ten_nganh_ctdt }}</a></li>
+    <li class="breadcrumb-item active">Thêm Học phần</li>
+{% endblock %}
 
-{% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">{{ page_title|default:"THÊM HỌC PHẦN MỚI" }}</h3>
+{% block daotao_content %}
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Điền thông tin học phần</h3>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="card-body">
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <div class="form-group">
+                <label for="{{ form.hoc_phan.id_for_label }}">Học phần</label>
+                {{ form.hoc_phan }}
+                {% if form.hoc_phan.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.hoc_phan.errors|join:", " }}
                     </div>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="card-body">
-                            {% if message %}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endif %}
+                {% endif %}
+            </div>
 
-                            {% if form.non_field_errors %}
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    {% for error in form.non_field_errors %}
-                                        <p class="mb-0">{{ error }}</p>
-                                    {% endfor %}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endif %}
-
-                            {# Include the partial for rendering form fields with Bootstrap classes #}
-                            {% include 'daotao/partials/_form_fields.html' %}
-                        </div>
-                        <div class="card-footer text-right">
-                            <button type="submit" class="btn btn-primary">Lưu Học Phần</button>
-                            <a href="{% url 'daotao:danh_sach_ctdt' %}" class="btn btn-secondary ml-2">Quay lại DS CTĐT</a>
-                        </div>
-                    </form>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.hoc_ky_du_kien.id_for_label }}">Học kỳ dự kiến</label>
+                        {{ form.hoc_ky_du_kien }}
+                        {% if form.hoc_ky_du_kien.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.hoc_ky_du_kien.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.la_bat_buoc.id_for_label }}">Là học phần bắt buộc?</label>
+                        {{ form.la_bat_buoc }}
+                        {% if form.la_bat_buoc.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.la_bat_buoc.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.tin_chi_ly_thuyet_apdung.id_for_label }}">Tín chỉ lý thuyết (áp dụng)</label>
+                        {{ form.tin_chi_ly_thuyet_apdung }}
+                        <small class="form-text text-muted">Để trống để sử dụng giá trị gốc từ thư viện học phần.</small>
+                        {% if form.tin_chi_ly_thuyet_apdung.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.tin_chi_ly_thuyet_apdung.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.tin_chi_thuc_hanh_apdung.id_for_label }}">Tín chỉ thực hành (áp dụng)</label>
+                        {{ form.tin_chi_thuc_hanh_apdung }}
+                        <small class="form-text text-muted">Để trống để sử dụng giá trị gốc từ thư viện học phần.</small>
+                        {% if form.tin_chi_thuc_hanh_apdung.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.tin_chi_thuc_hanh_apdung.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.ghi_chu_chi_tiet_hp.id_for_label }}">Ghi chú</label>
+                {{ form.ghi_chu_chi_tiet_hp }}
+                {% if form.ghi_chu_chi_tiet_hp.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.ghi_chu_chi_tiet_hp.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
         </div>
-    </div>
-{% endblock content %}
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Lưu Học phần</button>
+            <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=ctdt.pk %}" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block daotao_custom_scripts %}
+<script>
+$(document).ready(function() {
+    // Initialize Select2 for the course selection dropdown
+    $('#{{ form.hoc_phan.id_for_label }}').select2({
+        theme: 'bootstrap4',
+        placeholder: "Chọn một học phần",
+        allowClear: true
+    });
+});
+</script>
+{% endblock %}

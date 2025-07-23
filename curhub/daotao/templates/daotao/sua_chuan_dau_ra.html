@@ -15,9 +15,42 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
+
+                {# --- START: Display Messages and Form Errors --- #}
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if form.non_field_errors or form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {% if form.errors %}
+                            <p class="mb-1">Vui lòng sửa các lỗi sau:</p>
+                            <ul>
+                            {% for field, errors in form.errors.items %}
+                                <li><strong>{{ field.label }}:</strong> {{ errors|join:", " }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {# --- END: Display Messages and Form Errors --- #}
+
                 {% include "daotao/partials/_form_fields.html" %}
+                
                 <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                <a href="{% url 'daotao:sua_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+                <a href="{% url 'daotao:chi_tiet_ctdt' ctdt.id %}#cdr-tab-pane" class="btn btn-secondary">Hủy</a>
             </form>
         </div>
     </div>

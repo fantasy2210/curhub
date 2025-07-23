@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'daotao/base.html' %}
 
 {% block title %}
     {{ page_title|default:"Tải lên Học phần vào CTĐT" }} - {{ block.super }}
@@ -11,7 +11,7 @@
 {% block content %}
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Tải lên danh sách học phần cho CTĐT: <strong>{{ chuong_trinh.ten_nganh_ctdt }}</strong></h3>
+            <h3 class="card-title">Tải lên danh sách học phần cho CTĐT: <strong>{{ ctdt.ten_nganh_ctdt }}</strong></h3>
         </div>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -42,7 +42,7 @@
             </div>
             <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary">Tải lên</button>
-                <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=chuong_trinh.pk %}" class="btn btn-secondary ml-2">Hủy bỏ</a>
+                <a href="{% url 'daotao:chi_tiet_ctdt' pk_ctdt=ctdt.pk %}" class="btn btn-secondary ml-2">Hủy bỏ</a>
             </div>
         </form>
     </div>
@@ -68,7 +68,103 @@
                         <td><code>Mã học phần</code></td>
                         <td>Mã học phần trong thư viện học phần chung.</td>
                         <td><code>IT101</code></td>
-                        <td><strong>Bắt buộc.</strong> Phải tồn tại trong hệ thống.</td>
+                        <td><strong>Bắt buộc.</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>Tên học phần</code></td>
+                        <td>Tên đầy đủ của học phần.</td>
+                        <td><code>Lập trình Python cơ bản</code></td>
+                        <td><strong>Bắt buộc.</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>Tên học phần (TA)</code></td>
+                        <td>Tên học phần bằng tiếng Anh.</td>
+                        <td><code>Basic Python Programming</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>Tổng TC</code></td>
+                        <td>Tổng số tín chỉ gốc của học phần.</td>
+                        <td><code>3</code></td>
+                        <td><strong>Bắt buộc.</strong> Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>TC LT</code></td>
+                        <td>Số tín chỉ lý thuyết gốc.</td>
+                        <td><code>2</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>TC TH</code></td>
+                        <td>Số tín chỉ thực hành gốc.</td>
+                        <td><code>1</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số giờ LT</code></td>
+                        <td>Số giờ lý thuyết gốc.</td>
+                        <td><code>30</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số giờ TH</code></td>
+                        <td>Số giờ thực hành gốc.</td>
+                        <td><code>15</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Số giờ Tự học</code></td>
+                        <td>Số giờ tự học gốc.</td>
+                        <td><code>45</code></td>
+                        <td>Số nguyên.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Đơn vị QL</code></td>
+                        <td>Mã đơn vị quản lý gốc của học phần (ví dụ: KHOACNTT).</td>
+                        <td><code>KHOACNTT</code></td>
+                        <td>Phải là mã đơn vị đã tồn tại trong hệ thống.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Mô tả HP</code></td>
+                        <td>Mô tả chung về học phần.</td>
+                        <td><code>Giới thiệu về Python</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Tài liệu</code></td>
+                        <td>Tài liệu học tập.</td>
+                        <td><code>Sách Python</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Điều kiện tiên quyết</code></td>
+                        <td>Các học phần tiên quyết.</td>
+                        <td><code>IT100</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Điều kiện song hành</code></td>
+                        <td>Các học phần song hành.</td>
+                        <td><code>IT102</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Học phần tương đương</code></td>
+                        <td>Các học phần tương đương.</td>
+                        <td><code>CS101</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Học phần thay thế</code></td>
+                        <td>Các học phần thay thế.</td>
+                        <td><code>IT103</code></td>
+                        <td>Văn bản tự do.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Ghi chú HP</code></td>
+                        <td>Ghi chú cho học phần trong thư viện.</td>
+                        <td><code>Cập nhật 2023</code></td>
+                        <td>Văn bản tự do.</td>
                     </tr>
                     <tr>
                         <td><code>Học kỳ dự kiến</code></td>
@@ -77,16 +173,10 @@
                         <td>Số nguyên.</td>
                     </tr>
                     <tr>
-                        <td><code>Bắt buộc</code></td>
+                        <td><code>Là bắt buộc</code></td>
                         <td>Học phần này có bắt buộc trong CTĐT không.</td>
-                        <td><code>Có</code> / <code>Không</code> hoặc <code>TRUE</code> / <code>FALSE</code></td>
+                        <td><code>TRUE</code> / <code>FALSE</code></td>
                         <td>Giá trị boolean.</td>
-                    </tr>
-                    <tr>
-                        <td><code>Danh mục kiến thức</code></td>
-                        <td>Phân loại học phần theo danh mục kiến thức.</td>
-                        <td><code>Kiến thức cơ sở ngành</code></td>
-                        <td>Phải tồn tại trong danh mục kiến thức của hệ thống.</td>
                     </tr>
                     <tr>
                         <td><code>TC LT áp dụng</code></td>
@@ -113,19 +203,19 @@
                         <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
                     </tr>
                     <tr>
-                        <td><code>Số giờ tự học áp dụng</code></td>
+                        <td><code>Số giờ Tự học áp dụng</code></td>
                         <td>Số giờ tự học áp dụng cho học phần này trong CTĐT.</td>
                         <td><code>45</code></td>
                         <td>Số nguyên. Nếu để trống sẽ lấy giá trị gốc.</td>
                     </tr>
                     <tr>
-                        <td><code>Số tiết LT Online</code></td>
+                        <td><code>Số tiết LT online</code></td>
                         <td>Số tiết lý thuyết học online.</td>
                         <td><code>10</code></td>
                         <td>Số nguyên.</td>
                     </tr>
                     <tr>
-                        <td><code>Ghi chú</code></td>
+                        <td><code>Ghi chú chi tiết HP</code></td>
                         <td>Ghi chú thêm cho học phần trong CTĐT.</td>
                         <td><code>Học phần tiên quyết</code></td>
                         <td>Văn bản tự do.</td>

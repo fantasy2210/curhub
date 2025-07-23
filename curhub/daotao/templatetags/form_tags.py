@@ -4,26 +4,33 @@ from django.forms.widgets import Select, CheckboxInput, TextInput, Textarea, Num
 register = template.Library()
 
 @register.filter(name='add_class')
-def add_class(field, css_class=""): # Default to empty string
+def add_class(field, css_class=""):
+    """
+    Adds CSS classes to a form field's widget.
+    It preserves existing classes and adds new ones from the filter argument
+    and based on the widget type.
+    """
+    if not hasattr(field, 'field'):
+        return field
     widget = field.field.widget
-    final_css_class = css_class.strip() # Start with the provided class, stripped
-
+    
+    # Start with classes from the widget definition
+    existing_classes = widget.attrs.get('class', '')
+    
+    # Add classes from the template filter argument
+    all_classes = f'{existing_classes} {css_class}'.strip()
+    
+    # Add classes based on widget type for consistent styling
     if isinstance(widget, Select):
-        if not final_css_class: # If no class was provided, use form-select
-            final_css_class = 'form-select'
-        else: # If a class was provided, append form-select
-            final_css_class += ' form-select'
+        if 'form-control' not in all_classes:
+            all_classes = f'{all_classes} form-control'.strip()
+        if 'select2' not in all_classes:
+            all_classes = f'{all_classes} select2'.strip()
     elif isinstance(widget, CheckboxInput):
-        if not final_css_class: # If no class was provided, use form-check-input
-            final_css_class = 'form-check-input'
-        else: # If a class was provided, append form-check-input
-            final_css_class += ' form-check-input'
-    # For other common input types, apply form-control if no class is provided
+        if 'form-check-input' not in all_classes:
+            all_classes = f'{all_classes} form-check-input'.strip()
     elif isinstance(widget, (TextInput, Textarea, NumberInput, EmailInput, URLInput, DateInput, DateTimeInput, TimeInput)):
-        if not final_css_class:
-            final_css_class = 'form-control'
-    # For any other widget type not explicitly handled, if no class was provided, default to form-control
-    elif not final_css_class:
-        final_css_class = 'form-control'
-        
-    return field.as_widget(attrs={'class': final_css_class.strip()})
+        if 'form-control' not in all_classes:
+            all_classes = f'{all_classes} form-control'.strip()
+            
+    return field.as_widget(attrs={'class': all_classes})

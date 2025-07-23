@@ -91,6 +91,12 @@ class HocPhan(models.Model): # Thư viện học phần chung
     so_gio_ly_thuyet_goc = models.PositiveIntegerField(default=0, verbose_name="Số giờ LT gốc")
     so_gio_thuc_hanh_goc = models.PositiveIntegerField(default=0, verbose_name="Số giờ TH gốc")
     so_gio_tu_hoc_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ tự học/khác (gốc)")
+    so_gio_bai_tap_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Bài tập gốc (BT)")
+    so_gio_do_an_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Đồ án gốc (DA)")
+    so_gio_luan_an_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Luận án gốc (LA)")
+    so_gio_thuc_tap_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Thực tập gốc (TT)")
+    so_gio_bai_tap_lon_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Bài tập lớn gốc (BTL)")
+    so_gio_lms_goc = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ LMS gốc (LMS)")
     
     so_tin_chi_ects = models.FloatField(null=True, blank=True, verbose_name="Số tín chỉ ECTS (SoTinChiEU)")
     
@@ -104,6 +110,7 @@ class HocPhan(models.Model): # Thư viện học phần chung
 
     la_hoc_phan_tu_chon = models.BooleanField(default=False, verbose_name="Là học phần tự chọn? (IsMHTN=1)")
     khong_tinh_diem_tb = models.BooleanField(default=False, verbose_name="Không tính ĐTB? (KhgTinhDTB=1)")
+    edusoft_id = models.BigIntegerField(unique=True, null=True, blank=True, verbose_name="ID từ Edusoft (IDMH)") # Thêm trường ID từ Edusoft
 
     mo_ta_hoc_phan = models.TextField(blank=True, null=True, verbose_name="Mô tả chung học phần")
     ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo bản ghi")
@@ -247,6 +254,10 @@ class ChuongTrinhDaoTao(models.Model):
         verbose_name_plural = "Các Chương trình Đào tạo"
         ordering = ['ten_nganh_ctdt']
 
+    @property
+    def so_luong_hoc_phan(self):
+        return self.hoc_phan_trong_chuong_trinh.count()
+
 # (Các import và các model khác đã có)
 
 
@@ -312,6 +323,14 @@ class ChuanDauRa(models.Model):
     ngay_tao = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
     ngay_cap_nhat = models.DateTimeField(auto_now=True, verbose_name="Ngày cập nhật")
 
+    def save(self, *args, **kwargs):
+        if not self.ma_cdr:  # Only auto-generate if ma_cdr is not set
+            # Get the count of existing CDRs for this CTDT
+            count = ChuanDauRa.objects.filter(chuong_trinh_dao_tao=self.chuong_trinh_dao_tao).count()
+            # Generate a simple code based on CTDT's code and a sequence number
+            self.ma_cdr = f"CDR-{self.chuong_trinh_dao_tao.ma_nganh_ctdt}-{count + 1:03d}"
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.ma_cdr} - {self.chuong_trinh_dao_tao.ten_nganh_ctdt}"
 
@@ -342,6 +361,12 @@ class ChiTietHocPhanTrongCTDT(models.Model):
     so_gio_ly_thuyet_apdung = models.PositiveIntegerField(null=True, blank=True, verbose_name="Số giờ LT áp dụng")
     so_gio_thuc_hanh_apdung = models.PositiveIntegerField(null=True, blank=True, verbose_name="Số giờ TH áp dụng")
     so_gio_tu_hoc_apdung = models.PositiveIntegerField(null=True, blank=True, verbose_name="Số giờ tự học áp dụng")
+    so_gio_bai_tap_apdung = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Bài tập áp dụng")
+    so_gio_do_an_apdung = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Đồ án áp dụng")
+    so_gio_luan_an_apdung = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Luận án áp dụng")
+    so_gio_thuc_tap_apdung = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Thực tập áp dụng")
+    so_gio_bai_tap_lon_apdung = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ Bài tập lớn áp dụng")
+    so_gio_lms_apdung = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số giờ LMS áp dụng")
 
     # THÊM TRƯỜNG MỚI CHO SỐ TIẾT ONLINE
     so_tiet_ly_thuyet_online = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Số tiết Lý thuyết Online") 
@@ -363,6 +388,38 @@ class ChiTietHocPhanTrongCTDT(models.Model):
         ctdt_ten = self.chuong_trinh_dao_tao.ten_nganh_ctdt if self.chuong_trinh_dao_tao else "CTĐT không xác định"
         return f"{hoc_phan_ten} trong {ctdt_ten} ({self.tong_so_tin_chi_apdung} TC áp dụng)"
 
+    @property
+    def tong_so_gio_hoc_apdung(self):
+        # This property calculates the total applied hours for the course detail.
+        # It sums up various hour fields, falling back to the base values from
+        # the related HocPhan if the applied values are not specified.
+        
+        fields_to_sum = [
+            'so_gio_ly_thuyet', 'so_gio_thuc_hanh', 'so_gio_tu_hoc',
+            'so_gio_bai_tap', 'so_gio_do_an', 'so_gio_luan_an',
+            'so_gio_thuc_tap', 'so_gio_bai_tap_lon', 'so_gio_lms'
+        ]
+        
+        total_hours = 0
+        for field_base_name in fields_to_sum:
+            apdung_field_name = f"{field_base_name}_apdung"
+            goc_field_name = f"{field_base_name}_goc"
+            
+            # Get the 'applied' value from the current instance (ChiTietHocPhanTrongCTDT)
+            apdung_value = getattr(self, apdung_field_name, None)
+            
+            if apdung_value is not None:
+                total_hours += apdung_value
+            # If 'applied' value is None, fall back to the 'base' value from HocPhan
+            elif self.hoc_phan:
+                goc_value = getattr(self.hoc_phan, goc_field_name, 0)
+                total_hours += (goc_value or 0)
+
+        # Add online theory hours, which only exist in the 'applied' model
+        total_hours += (self.so_tiet_ly_thuyet_online or 0)
+        
+        return total_hours
+        
     class Meta:
         verbose_name = "Chi tiết Học phần trong CTĐT"
         verbose_name_plural = "Các Chi tiết Học phần trong CTĐT"

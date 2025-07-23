@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}CURHUB | Quản lý CTĐT{% endblock %}
+{% block title %}Quản lý CTĐT{% endblock %}
 
 {% block page_title %}Quản lý Chương trình Đào tạo ({{ page_obj.paginator.count }}){% endblock %}
 
 {% block breadcrumb_items %}
-    <li class="breadcrumb-item active">Quản lý CTĐT</li>
+    <li class="breadcrumb-item"><a href="{% url 'daotao:danh_sach_ctdt' %}">Quản lý CTĐT</a></li>
+    <li class="breadcrumb-item active">Danh sách</li>
 {% endblock %}
 
 {% block content %}
@@ -97,6 +98,9 @@
                     <p class="card-text mb-1">
                         <small class="text-muted">Đơn vị quản lý:</small> {{ ctdt.don_vi_quan_ly.ten_don_vi|default:"N/A" }}
                     </p>
+                    <p class="card-text mb-1">
+                        <small class="text-muted">Số học phần:</small> <strong>{{ ctdt.so_luong_hoc_phan|default:"N/A" }}</strong>
+                    </p>
                     {% if ctdt.so_quyet_dinh_ban_hanh %}
                     <p class="card-text mb-1">
                         <small class="text-muted">Số QĐ ban hành:</small> {{ ctdt.so_quyet_dinh_ban_hanh }}
@@ -156,4 +160,4 @@
             </ul>
         </nav>
     {% endif %}
-{% endblock %}
+{% endblock content %}

@@ -1,0 +1,10 @@
+
+Last login: Mon Jul 21 01:41:58 2025 from 172.250.30.72
+(base) nttoan@celri:~$ ollama list
+NAME               ID              SIZE      MODIFIED
+llama3.1:8b        46e0c10c039e    4.9 GB    7 months ago
+bge-m3:latest      790764642607    1.2 GB    8 months ago
+llama3.2:latest    a80c4f17acd5    2.0 GB    8 months ago
+phi3.5:latest      61819fb370a3    2.2 GB    9 months ago
+qwen2.5:3b         357c53fb659c    1.9 GB    9 months ago
+gemma2:2b          8ccf136fdd52    1.6 GB    9 months ago
