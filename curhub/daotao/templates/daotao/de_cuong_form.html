@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">{{ page_title }}</h3>
+        </div>
+        <div class="card-body">
+            {% crispy form %}
+        </div>
+    </div>
+
+    <div class="card card-secondary">
+        <div class="card-header">
+            <h3 class="card-title">Chuẩn Đầu Ra Học Phần (CLO)</h3>
+        </div>
+        <div class="card-body">
+            {{ formset.management_form }}
+            <div id="clo-formset">
+                {% for form in formset %}
+                    <div class="clo-form row align-items-center">
+                        {{ form.id }}
+                        <div class="col-md-2">{{ form.ma_clo|as_crispy_field }}</div>
+                        <div class="col-md-2">{{ form.loai_clo|as_crispy_field }}</div>
+                        <div class="col-md-5">{{ form.noi_dung|as_crispy_field }}</div>
+                        <div class="col-md-2">{{ form.muc_do_bloom|as_crispy_field }}</div>
+                        <div class="col-md-1">
+                            {% if form.instance.pk %}
+                                {{ form.DELETE|as_crispy_field }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+            <div id="empty-form-template" style="display: none;">
+                <div class="clo-form row align-items-center">
+                    {{ formset.empty_form.id }}
+                    <div class="col-md-2">{{ formset.empty_form.ma_clo }}</div>
+                    <div class="col-md-2">{{ formset.empty_form.loai_clo }}</div>
+                    <div class="col-md-5">{{ formset.empty_form.noi_dung }}</div>
+                    <div class="col-md-2">{{ formset.empty_form.muc_do_bloom }}</div>
+                    <div class="col-md-1">
+                        {{ formset.empty_form.DELETE }}
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <button type="button" id="add-clo-form" class="btn btn-success btn-sm mt-2"><i class="fas fa-plus"></i> Thêm CLO</button>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+        <a href="{% url 'daotao:danh_sach_de_cuong' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-secondary">Hủy</a>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<!-- Summernote -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.summernote').summernote({
+        height: 200,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formsetContainer = document.querySelector('#clo-formset');
+    const addButton = document.querySelector('#add-clo-form');
+    const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+    const emptyFormTemplate = document.querySelector('#empty-form-template').innerHTML;
+
+    addButton.addEventListener('click', function() {
+        let formsetCount = parseInt(totalFormsInput.value);
+        let newFormHtml = emptyFormTemplate.replace(/__prefix__/g, formsetCount);
+        
+        let newFormDiv = document.createElement('div');
+        newFormDiv.innerHTML = newFormHtml;
+        
+        formsetContainer.appendChild(newFormDiv.firstElementChild);
+        totalFormsInput.value = formsetCount + 1;
+    });
+});
+</script>
+{% endblock %}

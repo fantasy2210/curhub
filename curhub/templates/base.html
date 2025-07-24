@@ -79,6 +79,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{% url 'daotao:danh_sach_danh_muc_kien_thuc' %}" class="nav-link {% if request.path|startswith_filter:'/danh-muc-kien-thuc/' %}active{% endif %}">
+              <i class="nav-icon fas fa-sitemap"></i>
+              <p>
+                Danh mục Kiến thức
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

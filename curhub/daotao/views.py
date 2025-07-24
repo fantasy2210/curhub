@@ -9,11 +9,13 @@ from django.contrib import messages
 from .forms import (
     NganhDaoTaoForm, ChuongTrinhDaoTaoModelForm, HocPhanLibModelForm,
     ChiTietHocPhanTrongCTDTModelForm, DonViDaoTaoForm, MucTieuDaoTaoFormSet,
-    ChuanDauRaFormSet, UploadHocPhanCTDTForm, ChuanDauRaForm, MucTieuDaoTaoForm
+    ChuanDauRaFormSet, UploadHocPhanCTDTForm, ChuanDauRaForm, MucTieuDaoTaoForm,
+    DanhMucKienThucForm, DeCuongHocPhanForm, ChuanDauRaHocPhanFormSet
 )
 from .models import (
     NganhDaoTao, ChuongTrinhDaoTao, HocPhan, ChiTietHocPhanTrongCTDT,
-    LichSuThayDoiCTDT, DonViDaoTao, MucTieuDaoTao, ChuanDauRa
+    LichSuThayDoiCTDT, DonViDaoTao, MucTieuDaoTao, ChuanDauRa, DanhMucKienThuc,
+    DeCuongHocPhan
 )
 from django.db import transaction 
 import pandas as pd
@@ -192,6 +194,14 @@ def danh_sach_hoc_phan(request):
         'don_vi_filter': don_vi_filter,
     }
     return render(request, 'daotao/danh_sach_hoc_phan.html', context)
+
+def chi_tiet_hoc_phan(request, pk_hoc_phan):
+    hoc_phan = get_object_or_404(HocPhan, pk=pk_hoc_phan)
+    context = {
+        'hoc_phan': hoc_phan,
+        'page_title': f'Chi tiết học phần: {hoc_phan.ten_hoc_phan}'
+    }
+    return render(request, 'daotao/chi_tiet_hoc_phan.html', context)
 
 @login_required
 def them_hoc_phan_hang_loat(request, pk_ctdt):
@@ -855,4 +865,147 @@ def xoa_don_vi(request, pk):
         'page_title': f'Xác nhận xóa: {don_vi.ten_don_vi}'
     }
     return render(request, 'daotao/xoa_don_vi_confirm.html', context)
+#endregion
+
+
+# Danh Muc Kien Thuc
+@login_required
+def danh_sach_danh_muc_kien_thuc(request):
+    danh_muc_list = DanhMucKienThuc.objects.all()
+    context = {
+        'page_obj': danh_muc_list,
+        'page_title': 'Danh mục Kiến thức',
+    }
+    return render(request, 'daotao/danh_sach_danh_muc_kien_thuc.html', context)
+
+@login_required
+def them_danh_muc_kien_thuc(request):
+    if request.method == 'POST':
+        form = DanhMucKienThucForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Đã thêm Danh mục kiến thức thành công!')
+            return redirect('daotao:danh_sach_danh_muc_kien_thuc')
+    else:
+        form = DanhMucKienThucForm()
+    context = {
+        'form': form,
+        'page_title': 'Thêm Danh mục Kiến thức',
+    }
+    return render(request, 'daotao/them_danh_muc_kien_thuc.html', context)
+
+@login_required
+def sua_danh_muc_kien_thuc(request, pk):
+    danh_muc = get_object_or_404(DanhMucKienThuc, pk=pk)
+    if request.method == 'POST':
+        form = DanhMucKienThucForm(request.POST, instance=danh_muc)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Đã cập nhật Danh mục kiến thức thành công!')
+            return redirect('daotao:danh_sach_danh_muc_kien_thuc')
+    else:
+        form = DanhMucKienThucForm(instance=danh_muc)
+    context = {
+        'form': form,
+        'page_title': 'Sửa Danh mục Kiến thức',
+    }
+    return render(request, 'daotao/them_danh_muc_kien_thuc.html', context)
+
+@login_required
+def xoa_danh_muc_kien_thuc(request, pk):
+    danh_muc = get_object_or_404(DanhMucKienThuc, pk=pk)
+    if request.method == 'POST':
+        danh_muc.delete()
+        messages.success(request, f"Đã xóa Danh mục kiến thức '{danh_muc.ten_danh_muc}' thành công.")
+        return redirect('daotao:danh_sach_danh_muc_kien_thuc')
+    context = {
+        'object': danh_muc,
+        'page_title': 'Xác nhận xóa Danh mục kiến thức',
+        'confirm_message': f"Bạn có chắc chắn muốn xóa danh mục '{danh_muc.ten_danh_muc}' không?"
+    }
+    return render(request, 'daotao/confirm_delete.html', context)
+
+
+#region DeCuongHocPhan
+@login_required
+def danh_sach_de_cuong(request, pk_hoc_phan):
+    hoc_phan = get_object_or_404(HocPhan, pk=pk_hoc_phan)
+    de_cuong_list = DeCuongHocPhan.objects.filter(hoc_phan=hoc_phan).order_by('-ngay_ban_hanh')
+    context = {
+        'hoc_phan': hoc_phan,
+        'de_cuong_list': de_cuong_list,
+        'page_title': f'Các phiên bản Đề cương cho HP: {hoc_phan.ten_hoc_phan}'
+    }
+    return render(request, 'daotao/danh_sach_de_cuong.html', context)
+
+@login_required
+def them_de_cuong(request, pk_hoc_phan):
+    hoc_phan = get_object_or_404(HocPhan, pk=pk_hoc_phan)
+    if request.method == 'POST':
+        form = DeCuongHocPhanForm(request.POST)
+        # We pass a blank queryset because we are creating a new instance
+        formset = ChuanDauRaHocPhanFormSet(request.POST, queryset=DeCuongHocPhan.objects.none())
+        if form.is_valid() and formset.is_valid():
+            with transaction.atomic():
+                de_cuong = form.save(commit=False)
+                de_cuong.hoc_phan = hoc_phan
+                de_cuong.save()
+                # Link the formset to the newly created de_cuong instance
+                formset.instance = de_cuong
+                formset.save()
+            messages.success(request, "Đã thêm phiên bản đề cương mới và CĐR thành công.")
+            return redirect('daotao:danh_sach_de_cuong', pk_hoc_phan=pk_hoc_phan)
+        else:
+            messages.error(request, "Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.")
+    else:
+        form = DeCuongHocPhanForm()
+        formset = ChuanDauRaHocPhanFormSet(queryset=DeCuongHocPhan.objects.none())
+    context = {
+        'form': form,
+        'formset': formset,
+        'hoc_phan': hoc_phan,
+        'page_title': f'Thêm Đề cương mới cho HP: {hoc_phan.ten_hoc_phan}'
+    }
+    return render(request, 'daotao/de_cuong_form.html', context)
+
+@login_required
+def sua_de_cuong(request, pk_de_cuong):
+    de_cuong = get_object_or_404(DeCuongHocPhan, pk=pk_de_cuong)
+    hoc_phan = de_cuong.hoc_phan
+    if request.method == 'POST':
+        form = DeCuongHocPhanForm(request.POST, instance=de_cuong)
+        formset = ChuanDauRaHocPhanFormSet(request.POST, instance=de_cuong)
+        if form.is_valid() and formset.is_valid():
+            with transaction.atomic():
+                form.save()
+                formset.save()
+            messages.success(request, "Đã cập nhật phiên bản đề cương và CĐR thành công.")
+            return redirect('daotao:danh_sach_de_cuong', pk_hoc_phan=hoc_phan.pk)
+        else:
+            messages.error(request, "Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.")
+    else:
+        form = DeCuongHocPhanForm(instance=de_cuong)
+        formset = ChuanDauRaHocPhanFormSet(instance=de_cuong)
+    context = {
+        'form': form,
+        'formset': formset,
+        'hoc_phan': hoc_phan,
+        'de_cuong': de_cuong,
+        'page_title': f'Sửa Đề cương: {de_cuong.ten_de_cuong_phien_ban}'
+    }
+    return render(request, 'daotao/de_cuong_form.html', context)
+
+@login_required
+def xoa_de_cuong(request, pk_de_cuong):
+    de_cuong = get_object_or_404(DeCuongHocPhan, pk=pk_de_cuong)
+    hoc_phan_pk = de_cuong.hoc_phan.pk
+    if request.method == 'POST':
+        de_cuong.delete()
+        messages.success(request, "Đã xóa phiên bản đề cương thành công.")
+        return redirect('daotao:danh_sach_de_cuong', pk_hoc_phan=hoc_phan_pk)
+    context = {
+        'object': de_cuong,
+        'page_title': f'Xác nhận xóa Đề cương: {de_cuong.ten_de_cuong_phien_ban}'
+    }
+    return render(request, 'daotao/de_cuong_confirm_delete.html', context)
 #endregion

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ page_title }}</h3>
+        <div class="card-tools">
+            <a href="{% url 'daotao:them_de_cuong' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm phiên bản mới
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Tên/Ghi chú phiên bản</th>
+                    <th>Số hiệu</th>
+                    <th>Ngày ban hành</th>
+                    <th>Là phiên bản hiện hành?</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for de_cuong in de_cuong_list %}
+                <tr>
+                    <td>{{ de_cuong.ten_de_cuong_phien_ban }}</td>
+                    <td>{{ de_cuong.so_phien_ban|default_if_none:"" }}</td>
+                    <td>{{ de_cuong.ngay_ban_hanh|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if de_cuong.la_phien_ban_hien_hanh %}
+                            <span class="badge badge-success">Có</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Không</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'daotao:sua_de_cuong' pk_de_cuong=de_cuong.pk %}" class="btn btn-sm btn-info">Sửa</a>
+                        <a href="{% url 'daotao:xoa_de_cuong' pk_de_cuong=de_cuong.pk %}" class="btn btn-sm btn-danger">Xóa</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Chưa có phiên bản đề cương nào cho học phần này.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'daotao:danh_sach_hoc_phan' %}" class="btn btn-secondary">Quay lại Danh sách Học phần</a>
+    </div>
+</div>
+{% endblock %}

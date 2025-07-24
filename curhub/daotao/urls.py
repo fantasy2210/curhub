@@ -16,6 +16,7 @@ urlpatterns = [
     path('ctdt/tao-phien-ban-moi/', views.tao_phien_ban_moi_ctdt, name='tao_phien_ban_moi_ctdt'),
     path('ctdt/luu-tru/', views.luu_tru_ctdt, name='luu_tru_ctdt'),
     path('hoc-phan/danh-sach/', views.danh_sach_hoc_phan, name='danh_sach_hoc_phan'),
+    path('hoc-phan/<int:pk_hoc_phan>/chi-tiet/', views.chi_tiet_hoc_phan, name='chi_tiet_hoc_phan'),
     path('hoc-phan/<int:pk_hoc_phan>/sua/', views.sua_hoc_phan, name='sua_hoc_phan'),
     path('hoc-phan/<int:pk_hoc_phan>/xoa/', views.xoa_hoc_phan, name='xoa_hoc_phan'),
     path('hoc-phan/download-template/', views.download_hoc_phan_ctdt_template, name='download_hoc_phan_ctdt_template'),
@@ -42,4 +43,15 @@ urlpatterns = [
     path('ctdt/muc-tieu-dao-tao/<int:pk_po>/xoa/', views.xoa_muc_tieu_dao_tao, name='xoa_muc_tieu_dao_tao'),
     path('api/nganh-dao-tao-options/', views.get_nganh_dao_tao_options, name='get_nganh_dao_tao_options'),
     path('api/don-vi-dao-tao-options/', views.get_don_vi_dao_tao_options, name='get_don_vi_dao_tao_options'),
+    # Danh Muc Kien Thuc
+    path('danh-muc-kien-thuc/', views.danh_sach_danh_muc_kien_thuc, name='danh_sach_danh_muc_kien_thuc'),
+    path('danh-muc-kien-thuc/them/', views.them_danh_muc_kien_thuc, name='them_danh_muc_kien_thuc'),
+    path('danh-muc-kien-thuc/<int:pk>/sua/', views.sua_danh_muc_kien_thuc, name='sua_danh_muc_kien_thuc'),
+    path('danh-muc-kien-thuc/<int:pk>/xoa/', views.xoa_danh_muc_kien_thuc, name='xoa_danh_muc_kien_thuc'),
+
+    # De Cuong Hoc Phan
+    path('hoc-phan/<int:pk_hoc_phan>/de-cuong/', views.danh_sach_de_cuong, name='danh_sach_de_cuong'),
+    path('hoc-phan/<int:pk_hoc_phan>/de-cuong/them/', views.them_de_cuong, name='them_de_cuong'),
+    path('de-cuong/<int:pk_de_cuong>/sua/', views.sua_de_cuong, name='sua_de_cuong'),
+    path('de-cuong/<int:pk_de_cuong>/xoa/', views.xoa_de_cuong, name='xoa_de_cuong'),
 ]

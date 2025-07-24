@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ page_title }}</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã học phần</dt>
+            <dd class="col-sm-9">{{ hoc_phan.ma_hoc_phan }}</dd>
+
+            <dt class="col-sm-3">Tên học phần</dt>
+            <dd class="col-sm-9">{{ hoc_phan.ten_hoc_phan }}</dd>
+
+            <dt class="col-sm-3">Tên tiếng Anh</dt>
+            <dd class="col-sm-9">{{ hoc_phan.ten_tieng_anh|default_if_none:"" }}</dd>
+
+            <dt class="col-sm-3">Tổng số tín chỉ</dt>
+            <dd class="col-sm-9">{{ hoc_phan.tong_so_tin_chi_goc }}</dd>
+
+            <dt class="col-sm-3">Tín chỉ lý thuyết</dt>
+            <dd class="col-sm-9">{{ hoc_phan.tin_chi_ly_thuyet_goc }}</dd>
+
+            <dt class="col-sm-3">Tín chỉ thực hành</dt>
+            <dd class="col-sm-9">{{ hoc_phan.tin_chi_thuc_hanh_goc }}</dd>
+
+            <dt class="col-sm-3">Đơn vị quản lý</dt>
+            <dd class="col-sm-9">{{ hoc_phan.don_vi_quan_ly_goc.ten_don_vi|default_if_none:"N/A" }}</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">{{ hoc_phan.mo_ta_hoc_phan|default_if_none:""|safe }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'daotao:danh_sach_hoc_phan' %}" class="btn btn-secondary">Quay lại</a>
+        <a href="{% url 'daotao:sua_hoc_phan' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-info">Sửa</a>
+        <a href="{% url 'daotao:danh_sach_de_cuong' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-primary">Quản lý Đề cương</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card card-danger">
+    <div class="card-header">
+        <h3 class="card-title">{{ page_title }}</h3>
+    </div>
+    <div class="card-body">
+        <p>Bạn có chắc chắn muốn xóa phiên bản đề cương <strong>"{{ object.ten_de_cuong_phien_ban }}"</strong> không?</p>
+        <p>Hành động này không thể hoàn tác.</p>
+    </div>
+    <div class="card-footer">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
+            <a href="{% url 'daotao:danh_sach_de_cuong' pk_hoc_phan=object.hoc_phan.pk %}" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

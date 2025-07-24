@@ -108,6 +108,9 @@
                                 <td>{{ hoc_phan.don_vi_quan_ly_goc.ten_don_vi|default:"N/A" }}</td>
                                 <td>{{ hoc_phan.ghi_chu_hoc_phan|default:"" }}</td>
                                 <td class="text-center">
+                                    <a href="{% url 'daotao:chi_tiet_hoc_phan' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-info btn-sm" title="Chi tiết">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a href="{% url 'daotao:sua_hoc_phan' pk_hoc_phan=hoc_phan.pk %}" class="btn btn-warning btn-sm" title="Sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>

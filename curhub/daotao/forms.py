@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Fieldset, Submit, HTML
 from .models import (
     NganhDaoTao, ChuongTrinhDaoTao, HocPhan, ChiTietHocPhanTrongCTDT,
-    DonViDaoTao, MucTieuDaoTao, ChuanDauRa
+    DonViDaoTao, MucTieuDaoTao, ChuanDauRa, DanhMucKienThuc, DeCuongHocPhan, ChuanDauRaHocPhan
 )
 
 class NganhDaoTaoForm(forms.ModelForm):
@@ -138,3 +138,83 @@ ChuanDauRaFormSet = inlineformset_factory(
 
 class UploadHocPhanCTDTForm(forms.Form):
     file = forms.FileField(label="Chọn tệp Excel (.xlsx) hoặc CSV (.csv)")
+
+class DanhMucKienThucForm(forms.ModelForm):
+    class Meta:
+        model = DanhMucKienThuc
+        fields = '__all__'
+
+class DeCuongHocPhanForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Fieldset(
+                        'Thông tin Phiên bản',
+                        Row(
+                            Column('ten_de_cuong_phien_ban', css_class='form-group col-md-6 mb-0'),
+                            Column('so_phien_ban', css_class='form-group col-md-3 mb-0'),
+                            Column('ngay_ban_hanh', css_class='form-group col-md-3 mb-0'),
+                        ),
+                        'ly_do_cap_nhat',
+                        'la_phien_ban_hien_hanh',
+                        css_class='card-body'
+                    ),
+                    css_class='col-md-12'
+                ),
+            ),
+            Row(
+                Column('muc_tieu_hoc_phan', css_class='col-md-6'),
+                Column('tom_tat_noi_dung', css_class='col-md-6'),
+            ),
+            Row(
+                Column('phuong_phap_day_hoc', css_class='col-md-6'),
+                Column('nhiem_vu_sinh_vien', css_class='col-md-6'),
+            ),
+            Row(
+                Column('thang_diem_danh_gia', css_class='col-md-6'),
+                Column('tai_lieu_hoc_tap', css_class='col-md-6'),
+            )
+        )
+
+    class Meta:
+        model = DeCuongHocPhan
+        fields = [
+            'ten_de_cuong_phien_ban', 'so_phien_ban', 'ngay_ban_hanh',
+            'ly_do_cap_nhat', 'la_phien_ban_hien_hanh', 'muc_tieu_hoc_phan',
+            'tom_tat_noi_dung', 'phuong_phap_day_hoc', 'nhiem_vu_sinh_vien',
+            'thang_diem_danh_gia', 'tai_lieu_hoc_tap'
+        ]
+        widgets = {
+            'ngay_ban_hanh': forms.DateInput(attrs={'type': 'date'}),
+            'ly_do_cap_nhat': forms.Textarea(attrs={'rows': 3}),
+            'muc_tieu_hoc_phan': forms.Textarea(attrs={'class': 'summernote'}),
+            'tom_tat_noi_dung': forms.Textarea(attrs={'class': 'summernote'}),
+            'phuong_phap_day_hoc': forms.Textarea(attrs={'class': 'summernote'}),
+            'nhiem_vu_sinh_vien': forms.Textarea(attrs={'class': 'summernote'}),
+            'thang_diem_danh_gia': forms.Textarea(attrs={'class': 'summernote'}),
+            'tai_lieu_hoc_tap': forms.Textarea(attrs={'class': 'summernote'}),
+        }
+
+class ChuanDauRaHocPhanForm(forms.ModelForm):
+    class Meta:
+        model = ChuanDauRaHocPhan
+        fields = ['ma_clo', 'loai_clo', 'noi_dung', 'muc_do_bloom']
+        widgets = {
+            'ma_clo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mã CLO'}),
+            'loai_clo': forms.Select(attrs={'class': 'form-control'}),
+            'noi_dung': forms.Textarea(attrs={'rows': 2, 'class': 'form-control', 'placeholder': 'Nội dung'}),
+            'muc_do_bloom': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+ChuanDauRaHocPhanFormSet = inlineformset_factory(
+    DeCuongHocPhan,
+    ChuanDauRaHocPhan,
+    form=ChuanDauRaHocPhanForm,
+    fk_name='de_cuong',
+    extra=1,
+    can_delete=True
+)
