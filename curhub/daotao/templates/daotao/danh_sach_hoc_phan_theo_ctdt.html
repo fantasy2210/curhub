@@ -19,6 +19,7 @@
                 <th colspan="2">Thực hành</th>
                 <th rowspan="3">Giờ Tự học và giờ học khác</th>
                 <th rowspan="3">Ghi chú</th>
+                <th rowspan="3">Thao tác</th>
             </tr>
             <tr>
                 <th colspan="4">Giờ dự giảng</th>
@@ -31,127 +32,24 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Example for HỌC KỲ I -->
+            {% for hp in hoc_phan_trong_ctdt %}
             <tr>
-                <td colspan="10" class="text-left font-weight-bold">● HỌC KỲ I</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ hp.hoc_phan.ma_hoc_phan }}</td>
+                <td class="text-left">{{ hp.hoc_phan.ten_hoc_phan }}</td>
+                <td>{{ hp.hoc_phan.tong_so_tin_chi }}</td>
+                <td>{{ hp.tin_chi_ly_thuyet_apdung }}</td>
+                <td>{{ hp.so_gio_ly_thuyet_apdung }}</td>
+                <td>{{ hp.tin_chi_thuc_hanh_apdung }}</td>
+                <td>{{ hp.so_gio_thuc_hanh_apdung }}</td>
+                <td>{{ hp.so_gio_tu_hoc_apdung }}</td>
+                <td>{{ hp.ghi_chu_trong_ctdt }}</td>
+                <td>
+                    <a href="{% url 'daotao:sua_hoc_phan_ctdt' pk_chi_tiet_hp=hp.pk %}" class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'daotao:xoa_hoc_phan_ctdt' pk_chi_tiet_hp=hp.pk %}" class="btn btn-danger btn-sm" title="Xóa"><i class="fas fa-trash"></i></a>
+                </td>
             </tr>
-            <tr>
-                <td>1.</td>
-                <td></td>
-                <td class="text-left">Giáo dục thể chất 1*</td>
-                <td>1</td>
-                <td>0</td>
-                <td>0</td>
-                <td>1</td>
-                <td>30</td>
-                <td>20</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2.</td>
-                <td></td>
-                <td class="text-left">Giáo dục Quốc phòng- An ninh</td>
-                <td colspan="5">8 tín chỉ (165 tiết)</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>3.</td>
-                <td></td>
-                <td class="text-left">Anh văn không chuyên 1</td>
-                <td>3</td>
-                <td>2</td>
-                <td>30</td>
-                <td>1</td>
-                <td>30</td>
-                <td>90</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>4.</td>
-                <td></td>
-                <td class="text-left">Công nghệ số và ứng dụng</td>
-                <td>3</td>
-                <td>1</td>
-                <td>15</td>
-                <td>2</td>
-                <td>60</td>
-                <td>75</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>5.</td>
-                <td></td>
-                <td class="text-left">Sinh học và Di truyền</td>
-                <td>2</td>
-                <td>2</td>
-                <td>30</td>
-                <td>0</td>
-                <td>0</td>
-                <td>70</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>6.</td>
-                <td></td>
-                <td class="text-left">Hóa học</td>
-                <td>2</td>
-                <td>1</td>
-                <td>15</td>
-                <td>1</td>
-                <td>30</td>
-                <td>55</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>7.</td>
-                <td></td>
-                <td class="text-left">Pháp luật đại cương</td>
-                <td>2</td>
-                <td>1</td>
-                <td>15</td>
-                <td>1</td>
-                <td>30</td>
-                <td>55</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>8.</td>
-                <td></td>
-                <td class="text-left">Giải phẫu</td>
-                <td>2</td>
-                <td>1</td>
-                <td>15</td>
-                <td>1</td>
-                <td>30</td>
-                <td>55</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>9.</td>
-                <td></td>
-                <td class="text-left">Sức khỏe môi trường</td>
-                <td>2</td>
-                <td>1</td>
-                <td>15</td>
-                <td>1</td>
-                <td>30</td>
-                <td>55</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="3" class="text-left font-weight-bold">Tổng cộng</td>
-                <td class="font-weight-bold">16</td>
-                <td class="font-weight-bold">9</td>
-                <td class="font-weight-bold">135</td>
-                <td class="font-weight-bold">7</td>
-                <td class="font-weight-bold">210</td>
-                <td class="font-weight-bold">455</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="10" class="text-left">Chưa kể GDTC&GDQPAN</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

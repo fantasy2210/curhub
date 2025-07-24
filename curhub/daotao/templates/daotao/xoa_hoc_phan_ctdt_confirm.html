@@ -1,0 +1,28 @@
+{% extends 'daotao/base.html' %}
+
+{% block title %}
+    Xác nhận Xóa Học phần - {{ block.super }}
+{% endblock title %}
+
+{% block header_title %}
+    XÁC NHẬN XÓA HỌC PHẦN KHỎI CHƯƠNG TRÌNH ĐÀO TẠO
+{% endblock header_title %}
+
+{% block content %}
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Xác nhận Xóa</h3>
+        </div>
+        <div class="card-body">
+            <p>Bạn có chắc chắn muốn xóa học phần <strong>{{ chi_tiet.hoc_phan.ten_hoc_phan }}</strong> (Mã HP: {{ chi_tiet.hoc_phan.ma_hoc_phan }}) khỏi chương trình đào tạo <strong>{{ ctdt.ten_nganh_ctdt }}</strong> không?</p>
+            <p class="text-danger">Hành động này không thể hoàn tác.</p>
+        </div>
+        <div class="card-footer">
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
+                <a href="{% url 'daotao:danh_sach_hoc_phan_theo_ctdt' pk_ctdt=ctdt.pk %}" class="btn btn-secondary">Hủy bỏ</a>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

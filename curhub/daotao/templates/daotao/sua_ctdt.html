@@ -99,22 +99,22 @@
                                     <div class="card-body">
                                         <div class="mb-3">
                                             {{ form.mo_ta_chung.label_tag }}
-                                            {{ form.mo_ta_chung|add_class:"" }}
+                                            {{ form.mo_ta_chung|add_class:"summernote" }}
                                             {% if form.mo_ta_chung.errors %}<div class="text-danger">{{ form.mo_ta_chung.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
                                             {{ form.doi_tuong_tuyen_sinh.label_tag }}
-                                            {{ form.doi_tuong_tuyen_sinh|add_class:"" }}
+                                            {{ form.doi_tuong_tuyen_sinh|add_class:"summernote" }}
                                             {% if form.doi_tuong_tuyen_sinh.errors %}<div class="text-danger">{{ form.doi_tuong_tuyen_sinh.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
                                             {{ form.dieu_kien_tot_nghiep.label_tag }}
-                                            {{ form.dieu_kien_tot_nghiep|add_class:"" }}
+                                            {{ form.dieu_kien_tot_nghiep|add_class:"summernote" }}
                                             {% if form.dieu_kien_tot_nghiep.errors %}<div class="text-danger">{{ form.dieu_kien_tot_nghiep.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
                                             {{ form.chuong_trinh_tham_khao.label_tag }}
-                                            {{ form.chuong_trinh_tham_khao|add_class:"" }}
+                                            {{ form.chuong_trinh_tham_khao|add_class:"summernote" }}
                                             {% if form.chuong_trinh_tham_khao.errors %}<div class="text-danger">{{ form.chuong_trinh_tham_khao.errors }}</div>{% endif %}
                                         </div>
                                     </div>
@@ -130,13 +130,13 @@
                                     <div class="card-body">
                                         <div class="mb-3">
                                             {{ form.don_vi_quan_ly.label_tag }}
-                                            {{ form.don_vi_quan_ly|add_class:"" }}
+                                            {{ form.don_vi_quan_ly|add_class:"select2" }}
                                             {% if form.don_vi_quan_ly.errors %}<div class="text-danger">{{ form.don_vi_quan_ly.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
                                             {{ form.nganh_hoc_chung.label_tag }}
                                             <div class="input-group">
-                                                {{ form.nganh_hoc_chung|add_class:"" }}
+                                                {{ form.nganh_hoc_chung|add_class:"select2" }}
                                                 <div class="input-group-append">
                                                     <button type="button" class="btn btn-outline-secondary" onclick="openAddNganhWindow()">
                                                         <i class="fas fa-plus"></i> Thêm
@@ -150,17 +150,17 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="{{ form.trinh_do_dao_tao.id_for_label }}" class="form-label">{{ form.trinh_do_dao_tao.label }} <span class="text-danger">*</span></label>
-                                            {{ form.trinh_do_dao_tao|add_class:"" }}
+                                            {{ form.trinh_do_dao_tao|add_class:"select2" }}
                                             {% if form.trinh_do_dao_tao.errors %}<div class="text-danger">{{ form.trinh_do_dao_tao.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
                                             <label for="{{ form.hinh_thuc_dao_tao.id_for_label }}" class="form-label">{{ form.hinh_thuc_dao_tao.label }} <span class="text-danger">*</span></label>
-                                            {{ form.hinh_thuc_dao_tao|add_class:"" }}
+                                            {{ form.hinh_thuc_dao_tao|add_class:"select2" }}
                                             {% if form.hinh_thuc_dao_tao.errors %}<div class="text-danger">{{ form.hinh_thuc_dao_tao.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
                                             {{ form.van_bang_tot_nghiep.label_tag }}
-                                            {{ form.van_bang_tot_nghiep|add_class:"" }}
+                                            {{ form.van_bang_tot_nghiep|add_class:"select2" }}
                                             {% if form.van_bang_tot_nghiep.errors %}<div class="text-danger">{{ form.van_bang_tot_nghiep.errors }}</div>{% endif %}
                                         </div>
                                         <div class="mb-3">
@@ -321,10 +321,26 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
-{% load static %}
-<script src="{% static 'adminlte/plugins/jquery/jquery.min.js' %}"></script>
+{% block scripts %}
 <script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2({
+      theme: 'bootstrap4'
+    });
+
+    // Summernote
+    $('.summernote').summernote({
+        height: 150,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+
     function updateElementIndex(el, prefix, ndx) {
         var id_regex = new RegExp('(' + prefix + '-\\d+)');
         var replacement = prefix + '-' + ndx;
@@ -346,60 +362,59 @@
         totalForms.val(currentForms + 1);
     }
 
-    $(document).ready(function() {
-        // PO Formset
-        $('#add-po-form').click(function() {
-            var emptyFormHtml = `
-                <div class="formset-row mb-3 p-3 border rounded bg-light">
-                    {{ po_formset.empty_form.DELETE }}
-                    {% for field in po_formset.empty_form %}
-                        <div class="form-group">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.help_text %}
-                                <small class="form-text text-muted">{{ field.help_text }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                </div>
-            `;
-            addForm('po', emptyFormHtml);
-        });
-
-        // PLO Formset
-        $('#add-plo-form').click(function() {
-            var emptyFormHtml = `
-                <div class="formset-row mb-3 p-3 border rounded bg-light">
-                    {{ plo_formset.empty_form.DELETE }}
-                    {% for field in plo_formset.empty_form %}
-                        <div class="form-group">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.help_text %}
-                                <small class="form-text text-muted">{{ field.help_text }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                </div>
-            `;
-            addForm('plo', emptyFormHtml);
-        });
-
-        // Handle deletion (hide the form row)
-        $(document).on('change', '.formset-row input[type="checkbox"][id$="-DELETE"]', function() {
-            var row = $(this).closest('.formset-row');
-            if ($(this).is(':checked')) {
-                row.hide();
-            } else {
-                row.show();
-            }
-        });
+    // PO Formset
+    $('#add-po-form').click(function() {
+        var emptyFormHtml = `
+            <div class="formset-row mb-3 p-3 border rounded bg-light">
+                {{ po_formset.empty_form.DELETE }}
+                {% for field in po_formset.empty_form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        `;
+        addForm('po', emptyFormHtml);
     });
+
+    // PLO Formset
+    $('#add-plo-form').click(function() {
+        var emptyFormHtml = `
+            <div class="formset-row mb-3 p-3 border rounded bg-light">
+                {{ plo_formset.empty_form.DELETE }}
+                {% for field in plo_formset.empty_form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        `;
+        addForm('plo', emptyFormHtml);
+    });
+
+    // Handle deletion (hide the form row)
+    $(document).on('change', '.formset-row input[type="checkbox"][id$="-DELETE"]', function() {
+        var row = $(this).closest('.formset-row');
+        if ($(this).is(':checked')) {
+            row.hide();
+        } else {
+            row.show();
+        }
+    });
+  })
 </script>
 {% endblock %}

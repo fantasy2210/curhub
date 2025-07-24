@@ -1,4 +1,4 @@
-{% extends 'daotao/base.html' %}
+{% extends 'base.html' %}
 {% load form_tags %}
 
 {% block title %}CURHUB | Thêm CTĐT{% endblock %}
@@ -11,165 +11,14 @@
 {% endblock %}
 
 {% block content %}
+{% load crispy_forms_tags %}
 <form method="POST">
     {% csrf_token %}
-
-    {# --- START: Display Messages and Form Errors --- #}
-    {% if messages %}
-        <div class="mb-3">
-            {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if form.non_field_errors or form.errors %}
-        <div class="alert alert-danger" role="alert">
-            {% if form.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                    <p class="mb-0">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
-            {% if form.errors %}
-                <p class="mb-1">Vui lòng sửa các lỗi sau:</p>
-                <ul>
-                {% for field, errors in form.errors.items %}
-                    <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    {% endif %}
-    {# --- END: Display Messages and Form Errors --- #}
-
-    <div class="row">
-        <!-- CỘT BÊN TRÁI CHO CÁC THÔNG TIN CHÍNH -->
-        <div class="col-lg-8">
-            <div class="card card-primary card-outline mb-4">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-info-circle me-2"></i>Thông tin Định danh</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.ma_nganh_ctdt.id_for_label }}" class="form-label">{{ form.ma_nganh_ctdt.label }} <span class="text-danger">*</span></label>
-                            {{ form.ma_nganh_ctdt|add_class:"" }}
-                            {% if form.ma_nganh_ctdt.errors %}<div class="text-danger">{{ form.ma_nganh_ctdt.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.ten_nganh_ctdt.id_for_label }}" class="form-label">{{ form.ten_nganh_ctdt.label }} <span class="text-danger">*</span></label>
-                            {{ form.ten_nganh_ctdt|add_class:"" }}
-                            {% if form.ten_nganh_ctdt.errors %}<div class="text-danger">{{ form.ten_nganh_ctdt.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="{{ form.ten_tieng_anh.id_for_label }}" class="form-label">{{ form.ten_tieng_anh.label }}</label>
-                            {{ form.ten_tieng_anh|add_class:"" }}
-                            {% if form.ten_tieng_anh.errors %}<div class="text-danger">{{ form.ten_tieng_anh.errors }}</div>{% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-info card-outline">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-file-alt me-2"></i>Thông tin Mô tả</h3>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        {{ form.mo_ta_chung.label_tag }}
-                        {{ form.mo_ta_chung|add_class:"" }}
-                        {% if form.mo_ta_chung.errors %}<div class="text-danger">{{ form.mo_ta_chung.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.doi_tuong_tuyen_sinh.label_tag }}
-                        {{ form.doi_tuong_tuyen_sinh|add_class:"" }}
-                        {% if form.doi_tuong_tuyen_sinh.errors %}<div class="text-danger">{{ form.doi_tuong_tuyen_sinh.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.dieu_kien_tot_nghiep.label_tag }}
-                        {{ form.dieu_kien_tot_nghiep|add_class:"" }}
-                        {% if form.dieu_kien_tot_nghiep.errors %}<div class="text-danger">{{ form.dieu_kien_tot_nghiep.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.chuong_trinh_tham_khao.label_tag }}
-                        {{ form.chuong_trinh_tham_khao|add_class:"" }}
-                        {% if form.chuong_trinh_tham_khao.errors %}<div class="text-danger">{{ form.chuong_trinh_tham_khao.errors }}</div>{% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CỘT BÊN PHẢI CHO CÁC THUỘC TÍNH -->
-        <div class="col-lg-4">
-            <div class="card card-secondary card-outline mb-4">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-cogs me-2"></i>Thuộc tính & Phân loại</h3>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        {{ form.don_vi_quan_ly.label_tag }}
-                        {{ form.don_vi_quan_ly|add_class:"" }}
-                        {% if form.don_vi_quan_ly.errors %}<div class="text-danger">{{ form.don_vi_quan_ly.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.nganh_hoc_chung.label_tag }}
-                        <div class="input-group">
-                            {{ form.nganh_hoc_chung|add_class:"" }}
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary" onclick="openAddNganhWindow()">
-                                    <i class="fas fa-plus"></i> Thêm
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary" onclick="refreshNganhHocChung()">
-                                    <i class="fas fa-sync-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                        {% if form.nganh_hoc_chung.errors %}<div class="text-danger">{{ form.nganh_hoc_chung.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.trinh_do_dao_tao.id_for_label }}" class="form-label">{{ form.trinh_do_dao_tao.label }} <span class="text-danger">*</span></label>
-                        {{ form.trinh_do_dao_tao|add_class:"" }}
-                        {% if form.trinh_do_dao_tao.errors %}<div class="text-danger">{{ form.trinh_do_dao_tao.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.hinh_thuc_dao_tao.id_for_label }}" class="form-label">{{ form.hinh_thuc_dao_tao.label }} <span class="text-danger">*</span></label>
-                        {{ form.hinh_thuc_dao_tao|add_class:"" }}
-                        {% if form.hinh_thuc_dao_tao.errors %}<div class="text-danger">{{ form.hinh_thuc_dao_tao.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.van_bang_tot_nghiep.label_tag }}
-                        {{ form.van_bang_tot_nghiep|add_class:"" }}
-                        {% if form.van_bang_tot_nghiep.errors %}<div class="text-danger">{{ form.van_bang_tot_nghiep.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.so_tin_chi_yeu_cau.label_tag }}
-                        {{ form.so_tin_chi_yeu_cau|add_class:"" }}
-                        {% if form.so_tin_chi_yeu_cau.errors %}<div class="text-danger">{{ form.so_tin_chi_yeu_cau.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.thoi_gian_dao_tao.label_tag }}
-                        {{ form.thoi_gian_dao_tao|add_class:"" }}
-                        {% if form.thoi_gian_dao_tao.errors %}<div class="text-danger">{{ form.thoi_gian_dao_tao.errors }}</div>{% endif %}
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save me-2"></i>Lưu Chương Trình</button>
-                        <a href="{% url 'daotao:danh_sach_ctdt' %}" class="btn btn-secondary">Hủy</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% crispy form %}
 </form>
 {% endblock content %}
 
-{% block custom_scripts %}
+{% block scripts %}
 <script>
   function openAddNganhWindow() {
     window.open("{% url 'daotao:them_nganh_dao_tao' %}", "_blank", "width=800,height=600");
@@ -203,54 +52,12 @@
 
   $(function () {
     //Initialize Select2 Elements
-    $('#id_don_vi_quan_ly').select2({
+    $('.select2').select2({
       theme: 'bootstrap4'
-    })
-    $('#id_nganh_hoc_chung').select2({
-      theme: 'bootstrap4'
-    })
-    $('#id_trinh_do_dao_tao').select2({
-      theme: 'bootstrap4'
-    })
-    $('#id_hinh_thuc_dao_tao').select2({
-      theme: 'bootstrap4'
-    })
-    $('#id_van_bang_tot_nghiep').select2({
-      theme: 'bootstrap4'
-    })
+    });
 
     // Summernote
-    $('#id_mo_ta_chung').summernote({
-        height: 150,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-    });
-    $('#id_doi_tuong_tuyen_sinh').summernote({
-        height: 150,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-    });
-    $('#id_dieu_kien_tot_nghiep').summernote({
-        height: 150,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-    });
-    $('#id_chuong_trinh_tham_khao').summernote({
+    $('.summernote').summernote({
         height: 150,
         toolbar: [
             ['style', ['style']],
@@ -262,4 +69,4 @@
     });
   })
 </script>
-{% endblock custom_scripts %}
+{% endblock scripts %}

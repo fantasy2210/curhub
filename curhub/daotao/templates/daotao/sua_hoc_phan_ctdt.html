@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load form_tags %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">{{ page_title }}</h1>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header">
+            Chỉnh sửa Học phần <strong>{{ chi_tiet.hoc_phan.ten_hoc_phan }}</strong>
+            <p class="mb-0 small text-muted">Thuộc CTĐT: <strong>{{ ctdt.ten_nganh_ctdt }}</strong></p>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                {# --- START: Display Messages and Form Errors --- #}
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if form.non_field_errors or form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {% if form.errors %}
+                            <p class="mb-1">Vui lòng sửa các lỗi sau:</p>
+                            <ul>
+                            {% for field, errors in form.errors.items %}
+                                <li><strong>{{ field.label }}:</strong> {{ errors|join:", " }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {# --- END: Display Messages and Form Errors --- #}
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Chương trình đào tạo</label>
+                            <input type="text" class="form-control" value="{{ ctdt.ten_nganh_ctdt }} ({{ ctdt.ma_nganh_ctdt }}) - {{ ctdt.get_trinh_do_dao_tao_display }}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Học phần (từ thư viện)</label>
+                            <input type="text" class="form-control" value="{{ chi_tiet.hoc_phan.ma_hoc_phan }} - {{ chi_tiet.hoc_phan.ten_hoc_phan }}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.danh_muc_kien_thuc.id_for_label }}">{{ form.danh_muc_kien_thuc.label }}</label>
+                            {{ form.danh_muc_kien_thuc|add_class:"form-control" }}
+                            {% if form.danh_muc_kien_thuc.errors %}<div class="text-danger small mt-1">{{ form.danh_muc_kien_thuc.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.ghi_chu_trong_ctdt.id_for_label }}">{{ form.ghi_chu_trong_ctdt.label }}</label>
+                            {{ form.ghi_chu_trong_ctdt|add_class:"form-control" }}
+                            {% if form.ghi_chu_trong_ctdt.errors %}<div class="text-danger small mt-1">{{ form.ghi_chu_trong_ctdt.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ form.hoc_ky_du_kien.id_for_label }}">{{ form.hoc_ky_du_kien.label }}</label>
+                            {{ form.hoc_ky_du_kien|add_class:"form-control" }}
+                            {% if form.hoc_ky_du_kien.errors %}<div class="text-danger small mt-1">{{ form.hoc_ky_du_kien.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group form-check">
+                            {{ form.la_bat_buoc|add_class:"form-check-input" }}
+                            <label class="form-check-label" for="{{ form.la_bat_buoc.id_for_label }}">{{ form.la_bat_buoc.label }}</label>
+                            {% if form.la_bat_buoc.errors %}<div class="text-danger small mt-1">{{ form.la_bat_buoc.errors }}</div>{% endif %}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="{{ form.tin_chi_ly_thuyet_apdung.id_for_label }}">{{ form.tin_chi_ly_thuyet_apdung.label }}</label>
+                            {{ form.tin_chi_ly_thuyet_apdung|add_class:"form-control" }}
+                            {% if form.tin_chi_ly_thuyet_apdung.errors %}<div class="text-danger small mt-1">{{ form.tin_chi_ly_thuyet_apdung.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.tin_chi_thuc_hanh_apdung.id_for_label }}">{{ form.tin_chi_thuc_hanh_apdung.label }}</label>
+                            {{ form.tin_chi_thuc_hanh_apdung|add_class:"form-control" }}
+                            {% if form.tin_chi_thuc_hanh_apdung.errors %}<div class="text-danger small mt-1">{{ form.tin_chi_thuc_hanh_apdung.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.so_gio_ly_thuyet_apdung.id_for_label }}">{{ form.so_gio_ly_thuyet_apdung.label }}</label>
+                            {{ form.so_gio_ly_thuyet_apdung|add_class:"form-control" }}
+                            {% if form.so_gio_ly_thuyet_apdung.errors %}<div class="text-danger small mt-1">{{ form.so_gio_ly_thuyet_apdung.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.so_gio_thuc_hanh_apdung.id_for_label }}">{{ form.so_gio_thuc_hanh_apdung.label }}</label>
+                            {{ form.so_gio_thuc_hanh_apdung|add_class:"form-control" }}
+                            {% if form.so_gio_thuc_hanh_apdung.errors %}<div class="text-danger small mt-1">{{ form.so_gio_thuc_hanh_apdung.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.so_gio_tu_hoc_apdung.id_for_label }}">{{ form.so_gio_tu_hoc_apdung.label }}</label>
+                            {{ form.so_gio_tu_hoc_apdung|add_class:"form-control" }}
+                            {% if form.so_gio_tu_hoc_apdung.errors %}<div class="text-danger small mt-1">{{ form.so_gio_tu_hoc_apdung.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.so_tiet_ly_thuyet_online.id_for_label }}">{{ form.so_tiet_ly_thuyet_online.label }}</label>
+                            {{ form.so_tiet_ly_thuyet_online|add_class:"form-control" }}
+                            {% if form.so_tiet_ly_thuyet_online.errors %}<div class="text-danger small mt-1">{{ form.so_tiet_ly_thuyet_online.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <a href="{% url 'daotao:danh_sach_hoc_phan_theo_ctdt' ctdt.id %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

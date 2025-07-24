@@ -552,6 +552,33 @@ def sua_chi_tiet_hp_trong_ctdt(request, pk_chi_tiet_hp):
     return render(request, 'daotao/sua_chi_tiet_hp_trong_ctdt.html', context)
 
 @login_required
+def sua_hoc_phan_ctdt(request, pk_chi_tiet_hp):
+    chi_tiet = get_object_or_404(ChiTietHocPhanTrongCTDT, pk=pk_chi_tiet_hp)
+    ctdt = chi_tiet.chuong_trinh_dao_tao
+
+    if ctdt.trang_thai != 'DRAFT':
+        messages.error(request, "Chỉ có thể sửa chi tiết học phần cho CTĐT ở trạng thái 'Bản nháp'.")
+        return redirect('daotao:danh_sach_hoc_phan_theo_ctdt', pk_ctdt=ctdt.pk)
+
+    if request.method == 'POST':
+        form = ChiTietHocPhanTrongCTDTModelForm(request.POST, instance=chi_tiet)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Đã cập nhật chi tiết cho học phần: {chi_tiet.hoc_phan.ten_hoc_phan}")
+            return redirect('daotao:danh_sach_hoc_phan_theo_ctdt', pk_ctdt=ctdt.pk)
+        else:
+            messages.error(request, "Có lỗi xảy ra khi cập nhật. Vui lòng kiểm tra lại các trường.")
+    else:
+        form = ChiTietHocPhanTrongCTDTModelForm(instance=chi_tiet)
+
+    context = {
+        'form': form,
+        'ctdt': ctdt,
+        'chi_tiet': chi_tiet,
+        'page_title': f'Cập nhật Chi tiết Học phần: {chi_tiet.hoc_phan.ten_hoc_phan}'
+    }
+    return render(request, 'daotao/sua_hoc_phan_ctdt.html', context)
+@login_required
 def xoa_chi_tiet_hp_trong_ctdt(request, pk_chi_tiet_hp):
     chi_tiet = get_object_or_404(ChiTietHocPhanTrongCTDT, pk=pk_chi_tiet_hp)
     ctdt = chi_tiet.chuong_trinh_dao_tao
@@ -573,6 +600,27 @@ def xoa_chi_tiet_hp_trong_ctdt(request, pk_chi_tiet_hp):
     }
     return render(request, 'daotao/xoa_chi_tiet_hp_trong_ctdt_confirm.html', context)
 
+@login_required
+def xoa_hoc_phan_ctdt(request, pk_chi_tiet_hp):
+    chi_tiet = get_object_or_404(ChiTietHocPhanTrongCTDT, pk=pk_chi_tiet_hp)
+    ctdt = chi_tiet.chuong_trinh_dao_tao
+
+    if ctdt.trang_thai != 'DRAFT':
+        messages.error(request, "Chỉ có thể xóa học phần khỏi CTĐT ở trạng thái 'Bản nháp'.")
+        return redirect('daotao:danh_sach_hoc_phan_theo_ctdt', pk_ctdt=ctdt.pk)
+
+    if request.method == 'POST':
+        hoc_phan_ten = chi_tiet.hoc_phan.ten_hoc_phan
+        chi_tiet.delete()
+        messages.success(request, f"Đã xóa học phần '{hoc_phan_ten}' khỏi chương trình đào tạo.")
+        return redirect('daotao:danh_sach_hoc_phan_theo_ctdt', pk_ctdt=ctdt.pk)
+
+    context = {
+        'chi_tiet': chi_tiet,
+        'ctdt': ctdt,
+        'page_title': f'Xác nhận Xóa Học phần: {chi_tiet.hoc_phan.ten_hoc_phan}'
+    }
+    return render(request, 'daotao/xoa_hoc_phan_ctdt_confirm.html', context)
 @login_required
 @require_http_methods(["POST"])
 def update_chi_tiet_hoc_phan_inline(request):
@@ -741,3 +789,70 @@ def get_don_vi_dao_tao_options(request):
     return JsonResponse([], safe=False)
 
 # --- PLACEHOLDER FUNCTIONS END ---
+
+#region Đơn vị Đào tạo
+@login_required
+def danh_sach_don_vi(request):
+    query = request.GET.get('q', '')
+    don_vi_list = DonViDaoTao.objects.all()
+    if query:
+        don_vi_list = don_vi_list.filter(
+            Q(ma_don_vi__icontains=query) | Q(ten_don_vi__icontains=query)
+        )
+    context = {
+        'don_vi_list': don_vi_list,
+        'page_title': 'Quản lý Đơn vị Đào tạo',
+        'query': query
+    }
+    return render(request, 'daotao/danh_sach_don_vi.html', context)
+
+@login_required
+def them_don_vi(request):
+    if request.method == 'POST':
+        form = DonViDaoTaoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Đã thêm đơn vị đào tạo thành công!')
+            return redirect('daotao:danh_sach_don_vi')
+        else:
+            messages.error(request, 'Vui lòng sửa các lỗi bên dưới.')
+    else:
+        form = DonViDaoTaoForm()
+    context = {
+        'form': form,
+        'page_title': 'Thêm Đơn vị Đào tạo'
+    }
+    return render(request, 'daotao/don_vi_form.html', context)
+
+@login_required
+def sua_don_vi(request, pk):
+    don_vi = get_object_or_404(DonViDaoTao, pk=pk)
+    if request.method == 'POST':
+        form = DonViDaoTaoForm(request.POST, instance=don_vi)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Đã cập nhật đơn vị đào tạo thành công!')
+            return redirect('daotao:danh_sach_don_vi')
+        else:
+            messages.error(request, 'Vui lòng sửa các lỗi bên dưới.')
+    else:
+        form = DonViDaoTaoForm(instance=don_vi)
+    context = {
+        'form': form,
+        'page_title': f'Sửa Đơn vị: {don_vi.ten_don_vi}'
+    }
+    return render(request, 'daotao/don_vi_form.html', context)
+
+@login_required
+def xoa_don_vi(request, pk):
+    don_vi = get_object_or_404(DonViDaoTao, pk=pk)
+    if request.method == 'POST':
+        don_vi.delete()
+        messages.success(request, 'Đã xóa đơn vị đào tạo thành công!')
+        return redirect('daotao:danh_sach_don_vi')
+    context = {
+        'don_vi': don_vi,
+        'page_title': f'Xác nhận xóa: {don_vi.ten_don_vi}'
+    }
+    return render(request, 'daotao/xoa_don_vi_confirm.html', context)
+#endregion
